@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.amayadream.webchat.dao.IUserDao">
+
+  <resultMap id="BaseResultMap" type="com.amayadream.webchat.pojo.User">
+    <id column="USERID" property="userid" jdbcType="VARCHAR"/>
+    <result column="PASSWORD" property="password" jdbcType="VARCHAR"/>
+    <result column="NICKNAME" property="nickname" jdbcType="VARCHAR"/>
+    <result column="FIRSTTIME" property="firsttime" jdbcType="VARCHAR"/>
+    <result column="LASTTIME" property="lasttime" jdbcType="VARCHAR"/>
+    <result column="STATUS" property="status" jdbcType="INTEGER"/>
+  </resultMap>
+
+  <sql id="Base_Column_List">
+    USERID, PASSWORD, NICKNAME, FIRSTTIME, LASTTIME, STATUS
+  </sql>
+
+  <!-- 查询所有用户 -->
+  <select id="selectAll" resultMap="BaseResultMap" parameterType="java.util.Map">
+    SELECT * FROM
+    (
+    SELECT A.*,ROWNUM RN
+    FROM
+    (
+    SELECT * FROM TAB_USER
+    ORDER BY FIRSTTIME
+    ) A
+    )
+    WHERE RN BETWEEN #{start} and #{end}
+  </select>
+
+  <!-- 根据用户id查询用户 -->
+  <select id="selectUserByUserid" resultMap="BaseResultMap" parameterType="string">
+    SELECT
+    <include refid="Base_Column_List"/>
+    FROM TAB_USER
+    WHERE USERID = #{userid, jdbcType=VARCHAR}
+  </select>
+
+  <!-- 根据用户id查询用户 -->
+  <select id="selectCount" resultMap="BaseResultMap" >
+    SELECT COUNT(*) USERID
+    FROM TAB_USER
+  </select>
+
+  <!-- 插入用户 -->
+  <insert id="insert" parameterType="com.amayadream.webchat.pojo.User">
+    INSERT INTO TAB_USER (USERID, PASSWORD, NICKNAME, FIRSTTIME, LASTTIME, STATUS)
+    VALUES (#{userid, jdbcType=VARCHAR}, #{password, jdbcType=VARCHAR}, #{nickname, jdbcType=VARCHAR},
+    #{firsttime, jdbcType=VARCHAR}, #{lasttime, jdbcType=VARCHAR}, #{status, jdbcType=INTEGER})
+  </insert>
+
+  <!-- 更新用户 -->
+  <update id="update" parameterType="com.amayadream.webchat.pojo.User">
+    UPDATE TAB_USER
+    <set>
+      <if test="password != null and password != ''">
+        PASSWORD = #{password, jdbcType=VARCHAR},
+      </if>
+      <if test="nickname != null and nickname != ''">
+        NICKNAME = #{nickname, jdbcType=VARCHAR},
+      </if>
+      <if test="firsttime != null and firsttime != ''">
+        FIRSTTIME = #{firsttime, jdbcType=VARCHAR},
+      </if>
+      <if test="lasttime != null and lasttime != ''">
+        LASTTIME = #{lasttime, jdbcType=VARCHAR},
+      </if>
+      <if test="status != null and status != ''">
+        STATUS = #{status, jdbcType=INTEGER},
+      </if>
+    </set>
+    WHERE USERID = #{userid, jdbcType=VARCHAR}
+  </update>
+
+  <!-- 删除用户 -->
+  <delete id="delete" parameterType="string">
+    DELETE FROM TAB_USER
+    WHERE USERID = #{userid, jdbcType=VARCHAR}
+  </delete>
+
+</mapper>

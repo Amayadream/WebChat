@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="WebChat:war">
+    <output-path>$PROJECT_DIR$/target</output-path>
+    <root id="archive" name="webchat.war">
+      <element id="artifact" artifact-name="WebChat:war exploded" />
+    </root>
+  </artifact>
+</component>

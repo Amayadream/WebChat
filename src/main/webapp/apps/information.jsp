@@ -20,11 +20,45 @@
             <ul class="am-tabs-nav am-nav am-nav-tabs">
                 <li class="am-active"><a href="#tab1">个人信息</a></li>
             </ul>
-
             <div class="am-tabs-bd">
                 <div class="am-tab-panel am-fade am-in am-active" id="tab1">
+                    <div class="am-g">
+                        <c:set value="${user}" var="user"/>
+                        <div class="am-u-md-3"><b>昵称:</b></div>
+                        <div class="am-u-md-3">
+                            ${user.nickname}
+                        </div>
+                        <div class="am-u-md-6" style="float: right">
+                            <img class="am-circle" src="${user.profilehead}" width="140" height="140" alt="${user.nickname}"/>
+                        </div>
+
+                        <div class="am-u-md-3"><b>性别:</b></div>
+                        <div class="am-u-md-3">
+                            <c:if test="${user.sex == null || user.sex == ''}">未知</c:if>
+                            <c:if test="${user.sex != null && user.sex != ''}">
+                                <c:if test="${user.sex == 1}">男</c:if>
+                                <c:if test="${user.sex == 0}">女</c:if>
+                                <c:if test="${user.sex == -1}">保密</c:if>
+                            </c:if>
+                        </div>
+                        <div class="am-u-md-3"><b>年龄:</b></div>
+                        <div class="am-u-md-3">
+                            <c:if test="${user.age == null || user.age == ''}">未知</c:if>
+                            <c:if test="${user.age != null && user.age != ''}">${user.age}</c:if>
+                        </div>
+                        <div class="am-u-md-3"><b>简介:</b></div>
+                        <div class="am-u-md-3">
+                            <c:if test="${user.profile == null || user.profile == ''}">
+                                这个人很懒,什么都没有留下!
+                            </c:if>
+                            <c:if test="${user.profile != null && user.profile != ''}">
+                                ${user.profile}
+                            </c:if>
+                        </div>
+                    </div>
+
                     <div>
-                        <img class="am-circle" src="http://s.amazeui.org/media/i/demos/bw-2014-06-19.jpg?imageView/1/w/1000/h/1000/q/80" width="140" height="140" alt="Amayadream"/>
+
                     </div>
                 </div>
             </div>

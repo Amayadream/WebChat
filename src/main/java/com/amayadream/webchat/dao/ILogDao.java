@@ -1,7 +1,7 @@
 package com.amayadream.webchat.dao;
 
 import com.amayadream.webchat.pojo.Log;
-import org.springframework.data.repository.query.Param;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

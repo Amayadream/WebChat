@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.amayadream.webchat.dao.ILogDao">
+
+  <resultMap id="BaseResultMap" type="com.amayadream.webchat.pojo.Log">
+    <id column="ID" property="id" jdbcType="VARCHAR"/>
+    <result column="USERID" property="userid" jdbcType="VARCHAR"/>
+    <result column="TIME" property="time" jdbcType="VARCHAR"/>
+    <result column="TYPE" property="type" jdbcType="VARCHAR"/>
+    <result column="DETAIL" property="detail" jdbcType="VARCHAR"/>
+    <result column="IP" property="ip" jdbcType="VARCHAR"/>
+  </resultMap>
+
+  <sql id="Base_Column_List">
+    ID, USERID, TIME, TYPE, DETAIL, IP
+  </sql>
+
+  <select id="selectAll" resultMap="BaseResultMap">
+    SELECT * FROM
+    (
+    SELECT A.*,ROWNUM RN
+    FROM
+    (
+    SELECT * FROM WEBCHAT_LOG
+    ORDER BY TIME
+    ) A
+    )
+    WHERE RN BETWEEN #{start} and #{end}
+  </select>
+
+  <select id="selectLogByUserid" resultMap="BaseResultMap">
+    SELECT * FROM
+    (
+    SELECT A.*,ROWNUM RN
+    FROM
+    (
+    SELECT * FROM WEBCHAT_LOG
+    WHERE USERID = #{userid, jdbcType=VARCHAR}
+    ORDER BY TIME
+    ) A
+    )
+    WHERE RN BETWEEN #{start} and #{end}
+  </select>
+
+  <select id="selectCount" resultMap="BaseResultMap" >
+    SELECT COUNT(*) USERID
+    FROM WEBCHAT_LOG
+  </select>
+
+  <insert id="insert" parameterType="com.amayadream.webchat.pojo.Log">
+    INSERT INTO WEBCHAT_LOG (ID, USERID, TIME, TYPE, DETAIL, IP)
+    VALUES (#{id, jdbcType=VARCHAR}, #{userid, jdbcType=VARCHAR}, #{time, jdbcType=VARCHAR}, #{type, jdbcType=INTEGER},
+    #{detail, jdbcType=INTEGER}, #{ip, jdbcType=VARCHAR})
+  </insert>
+
+  <delete id="delete" parameterType="string">
+    DELETE FROM WEBCHAT_LOG
+    WHERE ID = #{id, jdbcType=VARCHAR}
+  </delete>
+
+  <delete id="deleteThisUser" parameterType="string">
+    DELETE FROM WEBCHAT_LOG
+    WHERE USERID = #{userid, jdbcType=VARCHAR}
+  </delete>
+
+  <delete id="deleteAll">
+    DELETE FROM WEBCHAT_LOG
+  </delete>
+
+</mapper>

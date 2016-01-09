@@ -18,7 +18,6 @@ import java.util.List;
 public class UserServiceImpl implements IUserService {
 
     @Resource private IUserDao userDao;
-    @Resource private User user;
 
     @Override
     public List<User> selectAll(int page, int pageSize) {

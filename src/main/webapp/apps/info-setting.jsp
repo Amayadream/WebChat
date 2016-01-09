@@ -81,20 +81,20 @@
                 </div>
 
                 <div class="am-tab-panel am-fade" id="tab2">
-                    <form class="am-form am-form-horizontal" style="text-align: center;">
+                    <form class="am-form am-form-horizontal" action="${ctx}/${userid}/upload" enctype="multipart/form-data" method="post" onsubmit="return checkFileType();" style="text-align: center;">
                         <div style="text-align: center;margin-bottom: 10px">
                             <img class="am-circle" src="${ctx}/${user.profilehead}" width="140" height="140" alt="Amayadream"/>
                         </div>
                         <div class="am-form-group am-form-file">
                             <button type="button" class="am-btn am-btn-secondary am-btn-sm">
                                 <i class="am-icon-cloud-upload"></i> 选择要上传的文件</button>
-                            <input id="doc-form-file" type="file" multiple>
+                            <input id="file" type="file" name="file" multiple>
                         </div>
                         <div id="file-list"></div>
-                        <button class="am-btn am-round am-btn-success"><span class="am-icon-upload"></span> 上传头像</button>
+                        <button type="submit" class="am-btn am-round am-btn-success"><span class="am-icon-upload"></span> 上传头像</button>
                         <script>
                             $(function() {
-                                $('#doc-form-file').on('change', function() {
+                                $('#file').on('change', function() {
                                     var fileNames = '';
                                     $.each(this.files, function() {
                                         fileNames += '<span class="am-badge">' + this.name + '</span> ';
@@ -156,6 +156,21 @@
             offset: 0,
             shift: 6
         });
+    }
+
+    function checkFileType(){
+        var format = ["bmp","jpg","gif","png"];
+        var filename = $("#file").val();
+        var ext = filename.substring(filename.lastIndexOf('.') + 1).toLowerCase();
+        if(jQuery.inArray(ext, format) != -1){
+            return true;
+        }else{
+            layer.msg('头像格式只能是bmp,jpg,gif,png!', {
+                offset: 0,
+                shift: 6
+            });
+            return false;
+        }
     }
 </script>
 </body>

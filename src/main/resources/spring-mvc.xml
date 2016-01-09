@@ -63,6 +63,7 @@
     <mvc:resources mapping="/common/**" location="/common/"/>
     <mvc:resources mapping="/plugins/**" location="/plugins/"/>
     <mvc:resources mapping="/static/**" location="/static/"/>
+    <mvc:resources mapping="/upload/**" location="/upload/"/>
 
     <!-- 按照后缀来配置,和文件夹配置结合就比较简单了 -->
     <mvc:resources location="/" mapping="/**/*.html"/>

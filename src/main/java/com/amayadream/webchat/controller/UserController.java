@@ -4,13 +4,16 @@ import com.amayadream.webchat.pojo.Log;
 import com.amayadream.webchat.pojo.User;
 import com.amayadream.webchat.service.ILogService;
 import com.amayadream.webchat.service.IUserService;
+import com.amayadream.webchat.utils.UploadUtil;
 import com.amayadream.webchat.utils.WordDefined;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
@@ -100,6 +103,24 @@ public class UserController {
             }
         }else{
             attributes.addFlashAttribute("error", "密码错误!");
+        }
+        return "redirect:/{userid}/config";
+    }
+
+    @RequestMapping(value = "{userid}/upload")
+    public String upload(@PathVariable("userid") String userid, MultipartFile file, HttpServletRequest request, UploadUtil uploadUtil, RedirectAttributes attributes){
+        try{
+            String fileurl = uploadUtil.upload(request, "upload", userid);
+            user = userService.selectUserByUserid(userid);
+            user.setProfilehead(fileurl);
+            boolean flag = userService.update(user);
+            if(flag){
+                attributes.addFlashAttribute("message", "["+userid+"]头像更新成功!");
+            }else{
+                attributes.addFlashAttribute("error", "["+userid+"]头像更新失败!");
+            }
+        } catch (Exception e){
+            attributes.addFlashAttribute("error", "["+userid+"]头像更新失败!");
         }
         return "redirect:/{userid}/config";
     }

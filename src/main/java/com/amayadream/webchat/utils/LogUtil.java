@@ -10,9 +10,8 @@ import com.amayadream.webchat.pojo.Log;
  */
 public class LogUtil {
 
-    private Log log;
-
     public Log setLog(String userid, String time, String type, String detail, String ip){
+         Log log = new Log();
         log.setUserid(userid);
         log.setTime(time);
         log.setType(type);

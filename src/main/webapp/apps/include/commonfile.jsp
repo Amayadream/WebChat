@@ -5,6 +5,7 @@
 <link rel="stylesheet" href="${ctx}/plugins/amaze/css/admin.css">
 <script src="${ctx}/plugins/jquery/jquery-2.1.4.min.js"></script>
 <script src="${ctx}/plugins/amaze/js/amazeui.min.js"></script>
+<script src="${ctx}/plugins/layer/layer.js"></script>
 <script src="${ctx}/plugins/amaze/js/app.js"></script>
 <script>
     var path = '${ctx}';

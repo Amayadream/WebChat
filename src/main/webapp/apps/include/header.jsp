@@ -10,12 +10,12 @@
         <ul class="am-nav am-nav-pills am-topbar-nav am-topbar-right admin-header-list">
             <li class="am-dropdown" data-am-dropdown>
                 <a class="am-dropdown-toggle" data-am-dropdown-toggle href="javascript:;">
-                    Amayadream <span class="am-icon-caret-down"></span>
+                    ${userid} <span class="am-icon-caret-down"></span>
                 </a>
                 <ul class="am-dropdown-content">
-                    <li><a href="${ctx}/setting"><span class="am-icon-user"></span> 资料</a></li>
+                    <li><a href="${ctx}/user/${userid}"><span class="am-icon-user"></span> 资料</a></li>
                     <li><a href="${ctx}/setting"><span class="am-icon-cog"></span> 设置</a></li>
-                    <li><a href="${ctx}/logout"><span class="am-icon-power-off"></span> 注销</a></li>
+                    <li><a href="${ctx}/user/logout"><span class="am-icon-power-off"></span> 注销</a></li>
                 </ul>
             </li>
         </ul>

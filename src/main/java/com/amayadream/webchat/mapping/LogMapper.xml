@@ -49,7 +49,7 @@
 
   <insert id="insert" parameterType="com.amayadream.webchat.pojo.Log">
     INSERT INTO WEBCHAT_LOG (ID, USERID, TIME, TYPE, DETAIL, IP)
-    VALUES (#{id, jdbcType=VARCHAR}, #{userid, jdbcType=VARCHAR}, #{time, jdbcType=VARCHAR}, #{type, jdbcType=INTEGER},
+    VALUES (sys_guid(), #{userid, jdbcType=VARCHAR}, #{time, jdbcType=VARCHAR}, #{type, jdbcType=INTEGER},
     #{detail, jdbcType=INTEGER}, #{ip, jdbcType=VARCHAR})
   </insert>
 

@@ -27,39 +27,50 @@
 
             <div class="am-tabs-bd">
                 <div class="am-tab-panel am-fade am-in am-active" id="tab1">
-                    <form class="am-form am-form-horizontal">
+                    <c:set value="${user}" var="user"/>
+                    <form class="am-form am-form-horizontal" id="information-form" action="${ctx}/${userid}/update" method="post" data-am-validator>
                         <div class="am-form-group">
                             <label for="userid" class="am-u-sm-2 am-form-label">用户名</label>
                             <div class="am-u-sm-10">
-                                <input type="email" id="userid" disabled>
+                                <input type="text" id="userid" name="userid" value="${user.userid}" disabled>
                             </div>
                         </div>
 
                         <div class="am-form-group">
                             <label for="nickname" class="am-u-sm-2 am-form-label">昵称</label>
                             <div class="am-u-sm-10">
-                                <input type="text" id="nickname" placeholder="这里输入你的昵称...">
+                                <input type="text" id="nickname" name="nickname" value="${user.nickname}" required placeholder="这里输入你的昵称...">
                             </div>
                         </div>
 
                         <div class="am-form-group">
                             <label for="sex" class="am-u-sm-2 am-form-label">性别</label>
                             <div class="am-u-sm-10">
-                                <div class="am-btn-group" data-am-button>
-                                    <label class="am-btn am-btn-secondary am-btn-sm">
-                                        <input type="radio" name="options" id="option1" > 男
-                                    </label>
-                                    <label class="am-btn am-btn-secondary am-btn-sm">
-                                        <input type="radio" name="options" id="option2" > 女
-                                    </label>
-                                </div>
+                                <select id="sex" name="sex" data-am-selected>
+                                    <option selected></option>
+                                    <option value="1">男</option>
+                                    <option value="0">女</option>
+                                    <option value="-1">保密</option>
+                                </select>
+                            </div>
+                            <script>
+                                $('#sex').find('option').eq(${user.sex}).attr('selected', true);
+                            </script>
+                        </div>
+                        <div class="am-form-group">
+                            <label for="age" class="am-u-sm-2 am-form-label">年龄</label>
+                            <div class="am-u-sm-10">
+                                <input type="number" id="age" name="age" min="1" max="100" value="${user.age}" placeholder="这里输入你的年龄...">
                             </div>
                         </div>
                         <div class="am-form-group">
-                            <label for="text" class="am-u-sm-2 am-form-label">个性签名</label>
+                            <label for="profile" class="am-u-sm-2 am-form-label">个性签名</label>
                             <div class="am-u-sm-10">
-                                <textarea class="" id="text" rows="5" placeholder="这里可以写下你的个性签名..."></textarea>
+                                <textarea class="" id="profile" name="profile" rows="5" placeholder="这里可以写下你的个性签名..."></textarea>
                             </div>
+                            <script>
+                                $("#profile").val("${user.profile}");
+                            </script>
                         </div>
                         <div class="am-form-group">
                             <div class="am-u-sm-10 am-u-sm-offset-2">
@@ -72,7 +83,7 @@
                 <div class="am-tab-panel am-fade" id="tab2">
                     <form class="am-form am-form-horizontal" style="text-align: center;">
                         <div style="text-align: center;margin-bottom: 10px">
-                            <img class="am-circle" src="http://s.amazeui.org/media/i/demos/bw-2014-06-19.jpg?imageView/1/w/1000/h/1000/q/80" width="140" height="140" alt="Amayadream"/>
+                            <img class="am-circle" src="${ctx}/${user.profilehead}" width="140" height="140" alt="Amayadream"/>
                         </div>
                         <div class="am-form-group am-form-file">
                             <button type="button" class="am-btn am-btn-secondary am-btn-sm">
@@ -96,25 +107,25 @@
                 </div>
 
                 <div class="am-tab-panel am-fade" id="tab3">
-                    <form class="am-form am-form-horizontal">
+                    <form class="am-form am-form-horizontal" data-am-validator action="${ctx}/${userid}/pass" method="post">
                         <div class="am-form-group">
                             <label for="password1" class="am-u-sm-2 am-form-label">原密码</label>
                             <div class="am-u-sm-10">
-                                <input type="password" id="password1" required placeholder="请输入原密码...">
+                                <input type="password" id="password1" name="oldpass" required placeholder="请输入原密码...">
                             </div>
                         </div>
 
                         <div class="am-form-group">
                             <label for="password2" class="am-u-sm-2 am-form-label">新密码</label>
                             <div class="am-u-sm-10">
-                                <input type="password" id="password2" required placeholder="请输入新密码...">
+                                <input type="password" id="password2" name="newpass" required placeholder="请输入新密码...">
                             </div>
                         </div>
 
                         <div class="am-form-group">
-                            <label for="password3" class="am-u-sm-2 am-form-label">新密码</label>
+                            <label for="password3" class="am-u-sm-2 am-form-label">确认新密码</label>
                             <div class="am-u-sm-10">
-                                <input type="password" id="password3" required placeholder="请确认新密码...">
+                                <input type="password" id="password3" data-equal-to="#password2" required placeholder="请确认新密码...">
                             </div>
                         </div>
 
@@ -125,7 +136,6 @@
                         </div>
                     </form>
                 </div>
-
             </div>
         </div>
     </div>
@@ -135,5 +145,18 @@
     <span class="am-icon-btn am-icon-th-list"></span>
 </a>
 <jsp:include page="include/footer.jsp"/>
+<script>
+    if("${message}"){
+        layer.msg('${message}', {
+            offset: 0,
+        });
+    }
+    if("${error}"){
+        layer.msg('${error}', {
+            offset: 0,
+            shift: 6
+        });
+    }
+</script>
 </body>
 </html>

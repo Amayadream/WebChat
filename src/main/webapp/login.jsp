@@ -46,6 +46,11 @@
     if("${error}"){
       $('#submit').attr('value',"${error}").css('background','red');
     }
+
+    if("${message}"){
+      $.scojs_message("${message}", $.scojs_message.TYPE_OK);
+    }
+
     $('.close').on('click', function(c){
       $('.login-form').fadeOut('slow', function(c){
         $('.login-form').remove();

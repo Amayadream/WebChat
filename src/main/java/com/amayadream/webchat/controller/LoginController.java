@@ -10,6 +10,7 @@ import com.amayadream.webchat.utils.NetUtil;
 import com.amayadream.webchat.utils.WordDefined;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.annotation.Resource;
@@ -20,27 +21,31 @@ import javax.servlet.http.HttpSession;
  * NAME   :  WebChat/com.amayadream.webchat.controller
  * Author :  Amayadream
  * Date   :  2016.01.08 14:57
- * TODO   :
+ * TODO   :  用户登录与注销
  */
 @Controller
+@RequestMapping(value = "user")
 public class LoginController {
     @Resource private User user;
     @Resource private IUserService userService;
     @Resource private Log log;
     @Resource private ILogService logService;
 
-    @RequestMapping(value = "login")
+    @RequestMapping(value = "login", method = RequestMethod.POST)
     public String login(String userid, String password, HttpSession session, RedirectAttributes attributes,
                         WordDefined defined, DateUtil dateUtil, LogUtil logUtil, NetUtil netUtil, HttpServletRequest request){
         user = userService.selectUserByUserid(userid);
         if(user == null){
             attributes.addFlashAttribute("error", defined.LOGIN_USERID_ERROR);
+            return "redirect:/login";
         }else{
             if(!user.getPassword().equals(password)){
                 attributes.addFlashAttribute("error", defined.LOGIN_PASSWORD_ERROR);
+                return "redirect:/login";
             }else{
                 if(user.getStatus() != 1){
                     attributes.addFlashAttribute("error", defined.LOGIN_USERID_DISABLED);
+                    return "redirect:/login";
                 }else{
                     logService.insert(logUtil.setLog(userid, dateUtil.getDateTime24(), defined.LOG_TYPE_LOGIN, defined.LOG_DETAIL_USER_LOGIN, netUtil.getIpAddress(request)));
                     session.setAttribute("userid", userid);
@@ -48,16 +53,14 @@ public class LoginController {
                     user.setLasttime(dateUtil.getDateTime24());
                     userService.update(user);
                     attributes.addFlashAttribute("message", defined.LOGIN_SUCCESS);
-                    return "/index";
+                    return "redirect:/chat";
                 }
             }
         }
-        return "/login";
     }
 
     @RequestMapping(value = "logout")
     public String logout(HttpSession session, RedirectAttributes attributes, WordDefined defined, HttpServletRequest request, LogUtil logUtil, DateUtil dateUtil, NetUtil netUtil){
-        logService.insert(logUtil.setLog(session.getAttribute("userid").toString(), dateUtil.getDateTime24(), defined.LOG_TYPE_LOGOUT, defined.LOG_DETAIL_USER_LOGOUT, netUtil.getIpAddress(request)));
         session.removeAttribute("userid");
         session.removeAttribute("login_status");
         attributes.addFlashAttribute("message", defined.LOGOUT_SUCCESS);

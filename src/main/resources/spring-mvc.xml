@@ -41,18 +41,20 @@
         <property name="suffix" value=".jsp" />
     </bean>
 
-    <!--<mvc:interceptors>-->
-    <!--&lt;!&ndash; 登陆拦截器,负责拦截未登录的controller操作 &ndash;&gt;-->
-    <!--<mvc:interceptor>-->
-    <!--&lt;!&ndash; 需要拦截的地址 &ndash;&gt;-->
-    <!--<mvc:mapping path="/**"/>-->
-    <!--&lt;!&ndash; 需要排除拦截的地址 &ndash;&gt;-->
-    <!--<mvc:exclude-mapping path="/login.jsp"/>-->
-    <!--<mvc:exclude-mapping path="/style/**"/>-->
-    <!--<mvc:exclude-mapping path="/ueditor/**"/>-->
-    <!--<bean id="loginInterceptor" class="com.amayadream.interceptor.LoginInterceptor"/>-->
-    <!--</mvc:interceptor>-->
-    <!--</mvc:interceptors>-->
+    <mvc:interceptors>
+    <!-- 登陆拦截器,负责拦截未登录的controller操作 -->
+    <mvc:interceptor>
+    <!-- 需要拦截的地址 -->
+    <mvc:mapping path="/**"/>
+    <!-- 需要排除拦截的地址 -->
+    <mvc:exclude-mapping path="/login.jsp"/>
+        <mvc:exclude-mapping path="/common/**"/>
+        <mvc:exclude-mapping path="/plugins/**"/>
+        <mvc:exclude-mapping path="/static/**"/>
+        <mvc:exclude-mapping path="/upload/**"/>
+    <bean id="loginInterceptor" class="com.amayadream.webchat.interceptor.LoginInterceptor"/>
+    </mvc:interceptor>
+    </mvc:interceptors>
 
     <!-- 开启注解模式 -->
     <mvc:annotation-driven/>

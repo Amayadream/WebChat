@@ -6,10 +6,8 @@
 <head>
   <title>WebChat | 登陆</title>
   <link href="<%=path%>/static/css/login.css" rel='stylesheet' type='text/css' />
-  <link href="<%=path%>/plugins/scojs/css/sco.message.css" rel='stylesheet' type='text/css' />
-  <link href="<%=path%>/plugins/scojs/css/scojs.css" rel='stylesheet' type='text/css' />
   <script src="<%=path%>/plugins/jquery/jquery-2.1.4.min.js"></script>
-  <script src="<%=path%>/plugins/scojs/js/sco.message.js"></script>
+  <script src="<%=path%>/plugins/layer/layer.js"></script>
 </head>
 <body>
 
@@ -40,7 +38,10 @@
 <script>
   $(function(){
     <c:if test="${not empty param.timeout}">
-      $.scojs_message("连接超时,请重新登陆!", $.scojs_message.TYPE_ERROR);
+      layer.msg('连接超时,请重新登陆!', {
+        offset: 0,
+        shift: 6
+      });
     </c:if>
 
     if("${error}"){
@@ -48,7 +49,9 @@
     }
 
     if("${message}"){
-      $.scojs_message("${message}", $.scojs_message.TYPE_OK);
+      layer.msg('${message}', {
+        offset: 0,
+      });
     }
 
     $('.close').on('click', function(c){

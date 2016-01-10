@@ -23,7 +23,7 @@ public class LogController {
     @Resource private ILogService logService;
 
     @RequestMapping(value = "{userid}/log")
-    public ModelAndView selectAll(@PathVariable("userid") String userid, @RequestParam int page){
+    public ModelAndView selectAll(@PathVariable("userid") String userid, @RequestParam(defaultValue = "1") int page){
         int pageSize = 5;
         ModelAndView view = new ModelAndView("apps/log");
         List<Log> list = logService.selectAll(page, pageSize);

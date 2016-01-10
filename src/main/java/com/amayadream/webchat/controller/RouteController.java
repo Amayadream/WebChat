@@ -27,4 +27,14 @@ public class RouteController {
         return "apps/index";
     }
 
+    @RequestMapping(value = "about")
+    public String about(){
+        return "apps/about";
+    }
+
+    @RequestMapping(value = "help")
+    public String help(){
+        return "apps/help";
+    }
+
 }

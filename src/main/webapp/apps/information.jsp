@@ -3,7 +3,7 @@
 <c:set var="ctx" value="${pageContext.request.contextPath}"/>
 <html>
 <head>
-    <title></title>
+    <title>WebChat | 个人信息</title>
     <jsp:include page="include/commonfile.jsp"/>
 </head>
 <body>

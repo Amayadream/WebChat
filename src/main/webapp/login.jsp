@@ -4,7 +4,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>登陆-电子邮件系统</title>
+  <title>WebChat | 登陆</title>
   <link href="<%=path%>/static/css/login.css" rel='stylesheet' type='text/css' />
   <link href="<%=path%>/plugins/scojs/css/sco.message.css" rel='stylesheet' type='text/css' />
   <link href="<%=path%>/plugins/scojs/css/scojs.css" rel='stylesheet' type='text/css' />

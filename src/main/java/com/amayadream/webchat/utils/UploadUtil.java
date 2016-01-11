@@ -47,15 +47,15 @@ public class UploadUtil {
                         System.out.println(myFileName);
                         //重命名上传后的文件名
                         String fileName =  userid + "." + prefix;
-                        //定义上传路径
-                        String path = request.getServletContext().getRealPath("/") + folder;
+                        //定义上传路径,格式为 upload/Amayadream/Amayadream.jpg
+                        String path = request.getServletContext().getRealPath("/") + folder + "/" + userid;
                         File localFile = new File(path, fileName);
                         if(!localFile.exists()){
                             localFile.mkdirs();
                         }
                         try {
                             file.transferTo(localFile);
-                            file_url = folder + "/" + fileName;
+                            file_url = folder + "/" + userid + "/" + fileName;
                         } catch (IOException e) {
                             e.printStackTrace();
                         }

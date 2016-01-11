@@ -10,9 +10,16 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.util.WebUtils;
 
 import javax.annotation.Resource;
+import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -29,13 +36,8 @@ public class UserController {
     @Resource private Log log;
     @Resource private ILogService logService;
 
-    @RequestMapping(value = "create")
-    public void create(){
-
-    }
-
     /**
-     * 显示个人信息
+     * 显示个人信息页面
      * @param userid
      * @param sessionid
      * @return
@@ -67,7 +69,6 @@ public class UserController {
      * @param userid
      * @param sessionid
      * @param user
-     * @param attributes
      * @return
      */
     @RequestMapping(value = "{userid}/update", method = RequestMethod.POST)
@@ -88,7 +89,6 @@ public class UserController {
      * @param userid
      * @param oldpass
      * @param newpass
-     * @param attributes
      * @return
      */
     @RequestMapping(value = "{userid}/pass", method = RequestMethod.POST)
@@ -110,6 +110,13 @@ public class UserController {
         return "redirect:/{userid}/config";
     }
 
+    /**
+     * 头像上传
+     * @param userid
+     * @param file
+     * @param request
+     * @return
+     */
     @RequestMapping(value = "{userid}/upload")
     public String upload(@PathVariable("userid") String userid, MultipartFile file, HttpServletRequest request, UploadUtil uploadUtil,
                          RedirectAttributes attributes, NetUtil netUtil, LogUtil logUtil, DateUtil dateUtil, WordDefined defined){
@@ -128,6 +135,39 @@ public class UserController {
             attributes.addFlashAttribute("error", "["+userid+"]头像更新失败!");
         }
         return "redirect:/{userid}/config";
+    }
+
+    /**
+     * 获取用户头像
+     * @param userid
+     */
+    @RequestMapping(value = "{userid}/head")
+    @ResponseBody
+    public void head(@PathVariable("userid") String userid, HttpServletRequest request, HttpServletResponse response){
+        try {
+            user = userService.selectUserByUserid(userid);
+            String path = user.getProfilehead();
+            String rootPath= WebUtils.getRealPath(request.getSession().getServletContext(), "/");
+            String picturePath = rootPath + path;
+            File file = new File(picturePath);
+            System.out.println(file.exists());
+            response.setContentType("image/jpeg; charset=UTF-8");
+            ServletOutputStream outputStream = response.getOutputStream();
+            FileInputStream inputStream = new FileInputStream(picturePath);
+            byte[] buffer = new byte[1024];
+            int i = -1;
+            while ((i = inputStream.read(buffer)) != -1) {
+                outputStream.write(buffer, 0, i);
+            }
+            outputStream.flush();
+            outputStream.close();
+            inputStream.close();
+            outputStream = null;
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 }

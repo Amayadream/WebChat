@@ -24,15 +24,16 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
         String contextPath = request.getContextPath();
         for (String s : IGNORE_URI) {
             if (url.contains(s)) {
-//                System.out.printf(url + "=>>>>>已自动忽略!" + "\n");
+                System.out.printf(url + "=>>>>>=>拦截器已自动忽略!" + "\n");
                 return true;
             }
         }
         HttpSession session = request.getSession();
         if(session != null && session.getAttribute("login_status") != null){
-//            System.out.printf(url + "=>>>>>已登录,欢迎访问!" + "\n");
+            System.out.printf(url + "=>>>>>拦截器=>已登录,欢迎访问!" + "\n");
             return true;
         }else{
+            System.out.printf(url + "=>>>>>拦截器=>未登录,已拦截!" + "\n");
             response.sendRedirect(contextPath + "/login?timeout=true");
             return false;
         }

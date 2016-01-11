@@ -64,6 +64,6 @@ public class LoginController {
         session.removeAttribute("userid");
         session.removeAttribute("login_status");
         attributes.addFlashAttribute("message", defined.LOGOUT_SUCCESS);
-        return "/login";
+        return "redirect:/login";
     }
 }

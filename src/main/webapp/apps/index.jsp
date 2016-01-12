@@ -58,7 +58,7 @@
 
     var wsServer = null;
     var ws = null;
-    wsServer = "ws://" + location.host+"${pageContext.request.contextPath}" + "/ws";
+    wsServer = "ws://" + location.host+"${pageContext.request.contextPath}" + "/chatServer";
     ws = new WebSocket(wsServer); //创建WebSocket对象
     ws.onopen = function (evt) {
         layer.msg("已经建立连接", { offset: 0});
@@ -77,6 +77,15 @@
             ws = new WebSocket(wsServer); //创建WebSocket对象
             ws.onopen = function (evt) {
                 layer.msg("成功建立连接!", { offset: 0});
+            };
+            ws.onmessage = function (evt) {
+                showMessage(evt.data)
+            };
+            ws.onerror = function (evt) {
+                layer.msg("产生异常", { offset: 0});
+            };
+            ws.onclose = function (evt) {
+                layer.msg("已经关闭连接", { offset: 0});
             };
         }else{
             layer.msg("连接已存在!", { offset: 0, shift: 6 });
@@ -107,27 +116,39 @@
             layer.msg("连接未开启!", { offset: 0, shift: 6 });
         }else{
             var message = $("#message").val();
-//            ws.send(message);
             ws.send(JSON.stringify({
-                content : message,
-                userid : '${userid}',
-                sendtime : getDateFull()
+                message : {
+                    content : message,
+                    userid : '${userid}',
+                    sendtime : getDateFull()
+                },
+                type : "message"
             }));
         }
     }
 
     function showMessage(message){
         message = JSON.parse(message);
-        var consoles = $("#chat");
-        var isSef = "";
-        if('${userid}' == message.userid){
-            isSef = "am-comment-flip";
+        if(message.type == "message"){     //判断消息类型
+            var msg = message.message;
+            var consoles = $("#chat");
+            var isSef = "";
+            if('${userid}' == msg.userid){
+                isSef = "am-comment-flip";
+            }
+            var html = "<li class=\"am-comment "+isSef+" am-comment-primary\"><a href=\"#link-to-user-home\"><img width=\"48\" height=\"48\" class=\"am-comment-avatar\" alt=\"\" src=\"${ctx}/"+msg.userid+"/head\"></a><div class=\"am-comment-main\">\n" +
+                    "<header class=\"am-comment-hd\"><div class=\"am-comment-meta\">   <a class=\"am-comment-author\" href=\"#link-to-user\">"+msg.userid+"</a> 发表于<time>"+msg.sendtime+"</time></div></header><div class=\"am-comment-bd\"><p>"+msg.content+"</p></div></div></li>";
+            consoles.append(html);
         }
-        var x = "<li class=\"am-comment "+isSef+" am-comment-primary\"><a href=\"#link-to-user-home\"><img width=\"48\" height=\"48\" class=\"am-comment-avatar\" alt=\"\" src=\"${ctx}/"+message.userid+"/head\"></a><div class=\"am-comment-main\">\n" +
-                "<header class=\"am-comment-hd\"><div class=\"am-comment-meta\">   <a class=\"am-comment-author\" href=\"#link-to-user\">"+message.userid+"</a> 发表于<time>"+message.sendtime+"</time></div></header><div class=\"am-comment-bd\"><p>"+message.content+"</p></div></div></li>";
-        consoles.append(x);
+        if(message.type == "notice"){
+            var msg = message.message;
+            console.log(msg);
+            var consoles = $("#chat");
+            var html = "<p>"+msg+"</p>";
+            consoles.append(html);
+        }
         var chat = $("#chat-view");
-        chat.scrollTop(chat[0].scrollHeight);
+        chat.scrollTop(chat[0].scrollHeight);   //滚动
     }
 
     function clearConsole(){

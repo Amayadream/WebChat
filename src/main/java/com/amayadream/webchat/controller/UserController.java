@@ -1,11 +1,10 @@
 package com.amayadream.webchat.controller;
 
-import com.amayadream.webchat.pojo.Log;
 import com.amayadream.webchat.pojo.User;
 import com.amayadream.webchat.service.ILogService;
 import com.amayadream.webchat.service.IUserService;
 import com.amayadream.webchat.utils.*;
-import com.amayadream.webchat.websocket.MyWebsocket;
+import com.amayadream.webchat.websocket.ChatServer;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -21,7 +20,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.List;
 
 /**
  * NAME   :  WebChat/com.amayadream.webchat.controller
@@ -41,7 +39,7 @@ public class UserController {
      * @return
      */
     @RequestMapping(value = "chat")
-    public ModelAndView getIndex(MyWebsocket websocket){
+    public ModelAndView getIndex(ChatServer websocket){
         ModelAndView view = new ModelAndView("apps/index");
 //        int onlineCount = websocket.getOnlineCount();
 //        view.addObject("online", onlineCount);

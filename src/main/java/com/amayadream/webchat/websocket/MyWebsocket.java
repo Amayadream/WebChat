@@ -85,15 +85,15 @@ public class MyWebsocket {
         //this.session.getAsyncRemote().sendText(message);
     }
 
-    public static synchronized int getOnlineCount() {
+    public  int getOnlineCount() {
         return onlineCount;
     }
 
-    public static synchronized void addOnlineCount() {
+    public  void addOnlineCount() {
         MyWebsocket.onlineCount++;
     }
 
-    public static synchronized void subOnlineCount() {
+    public  void subOnlineCount() {
         MyWebsocket.onlineCount--;
     }
 }

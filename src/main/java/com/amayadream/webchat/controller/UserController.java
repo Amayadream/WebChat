@@ -5,6 +5,7 @@ import com.amayadream.webchat.pojo.User;
 import com.amayadream.webchat.service.ILogService;
 import com.amayadream.webchat.service.IUserService;
 import com.amayadream.webchat.utils.*;
+import com.amayadream.webchat.websocket.MyWebsocket;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -33,8 +34,19 @@ import java.util.List;
 public class UserController {
     @Resource private User user;
     @Resource private IUserService userService;
-    @Resource private Log log;
     @Resource private ILogService logService;
+
+    /**
+     * 聊天主页
+     * @return
+     */
+    @RequestMapping(value = "chat")
+    public ModelAndView getIndex(MyWebsocket websocket){
+        ModelAndView view = new ModelAndView("apps/index");
+//        int onlineCount = websocket.getOnlineCount();
+//        view.addObject("online", onlineCount);
+        return view;
+    }
 
     /**
      * 显示个人信息页面

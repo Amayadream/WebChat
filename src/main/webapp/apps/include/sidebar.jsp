@@ -21,8 +21,8 @@
         </ul>
         <div class="am-panel am-panel-default admin-sidebar-panel">
             <div class="am-panel-bd">
-                <p><span class="am-icon-tag"></span> wiki</p>
-                <p>Welcome to the Amaze UI wiki!</p>
+                <p><span class="am-icon-tag"></span> Welcome</p>
+                <p>欢迎使用WebChat聊天室~</p>
             </div>
         </div>
     </div>

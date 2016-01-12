@@ -22,11 +22,6 @@ public class RouteController {
         return "login";
     }
 
-    @RequestMapping(value = "chat")
-    public String chat(){
-        return "apps/index";
-    }
-
     @RequestMapping(value = "about")
     public String about(){
         return "apps/about";

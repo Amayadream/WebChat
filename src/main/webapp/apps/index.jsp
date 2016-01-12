@@ -18,15 +18,17 @@
             <div class="am-fl am-cf"><strong class="am-text-primary am-text-lg">聊天</strong> / <small>chat</small></div>
         </div>
 
-        <div class="am-scrollable-vertical" id="chat-view" style="height: 450px;">
-            <!-- comment -->
-            <ul class="am-comments-list am-comments-list-flip" id="chat">
-            </ul>
-        </div>
-        <div>
+        <div class="" style="width: 80%;float:left;">
+            <!-- 聊天区 -->
+            <div class="am-scrollable-vertical" id="chat-view" style="height: 450px;">
+                <ul class="am-comments-list am-comments-list-flip" id="chat">
+                </ul>
+            </div>
+            <!-- 输入区 -->
             <div class="am-form-group am-form">
                 <textarea class="" id="message" name="message" rows="5"  placeholder="这里输入你想发送的信息..."></textarea>
             </div>
+            <!-- 按钮区 -->
             <div class="am-btn-group am-btn-group-xs" style="float:right;">
                 <button class="am-btn am-btn-default" type="button" onclick="getConnection()"><span class="am-icon-plug"></span> 连接</button>
                 <button class="am-btn am-btn-default" type="button" onclick="closeConnection()"><span class="am-icon-remove"></span> 断开</button>
@@ -34,6 +36,16 @@
                 <button class="am-btn am-btn-default" type="button" onclick="clearConsole()"><span class="am-icon-trash-o"></span> 清屏</button>
                 <button class="am-btn am-btn-default" type="button" onclick="sendMessage()"><span class="am-icon-commenting"></span> 发送</button>
             </div>
+        </div>
+
+        <!-- 列表区 -->
+        <div class="am-panel am-panel-default" style="float:right;width: 20%;">
+            <div class="am-panel-hd">
+                <h3 class="am-panel-title">在线列表</h3>
+            </div>
+            <ul class="am-list am-list-static am-list-striped" id="list" style="text-align: center">
+
+            </ul>
         </div>
     </div>
     <!-- content end -->
@@ -72,6 +84,10 @@
     ws.onclose = function (evt) {
         layer.msg("已经关闭连接", { offset: 0});
     };
+
+    /**
+     * 连接
+     */
     function getConnection(){
         if(ws == null){
             ws = new WebSocket(wsServer); //创建WebSocket对象
@@ -93,6 +109,9 @@
 
     }
 
+    /**
+     * 关闭连接
+     */
     function closeConnection(){
         if(ws != null){
             ws.close();
@@ -103,6 +122,9 @@
         }
     }
 
+    /**
+     * 检查连接
+     */
     function checkConnection(){
         if(ws != null){
             layer.msg(ws.readyState == 0? "连接异常":"连接正常", { offset: 0});
@@ -111,48 +133,68 @@
         }
     }
 
+    /**
+     * 发送信息给后台
+     */
     function sendMessage(){
         if(ws == null){
             layer.msg("连接未开启!", { offset: 0, shift: 6 });
         }else{
             var message = $("#message").val();
-            ws.send(JSON.stringify({
-                message : {
-                    content : message,
-                    userid : '${userid}',
-                    sendtime : getDateFull()
-                },
-                type : "message"
-            }));
+            if(message != null && message != ""){
+                ws.send(JSON.stringify({
+                    message : {
+                        content : message,
+                        userid : '${userid}',
+                        sendtime : getDateFull()
+                    },
+                    type : "message"
+                }));
+            }else{
+                layer.msg("请不要惜字如金!", { offset: 0, shift: 6 });
+            }
         }
     }
 
+    /**
+     * 将消息展示到消息区
+     * @param message
+     */
     function showMessage(message){
         message = JSON.parse(message);
+        var msg = message.message;
+        var output = $("#chat");
         if(message.type == "message"){     //判断消息类型
-            var msg = message.message;
-            var consoles = $("#chat");
             var isSef = "";
             if('${userid}' == msg.userid){
                 isSef = "am-comment-flip";
             }
             var html = "<li class=\"am-comment "+isSef+" am-comment-primary\"><a href=\"#link-to-user-home\"><img width=\"48\" height=\"48\" class=\"am-comment-avatar\" alt=\"\" src=\"${ctx}/"+msg.userid+"/head\"></a><div class=\"am-comment-main\">\n" +
                     "<header class=\"am-comment-hd\"><div class=\"am-comment-meta\">   <a class=\"am-comment-author\" href=\"#link-to-user\">"+msg.userid+"</a> 发表于<time>"+msg.sendtime+"</time></div></header><div class=\"am-comment-bd\"><p>"+msg.content+"</p></div></div></li>";
-            consoles.append(html);
+            output.append(html);
         }
         if(message.type == "notice"){
-            var msg = message.message;
-            console.log(msg);
-            var consoles = $("#chat");
-            var html = "<p>"+msg+"</p>";
-            consoles.append(html);
+            var notice = "<div><p class=\"am-text-success\" style=\"text-align:center\"><span class=\"am-icon-bell\"></span> "+msg+"</p></div>";
+            output.append(notice);
         }
+        //在后台发生OnOpen()和OnClose()的时候会返回用户列表,这里显示到前台,普通的传递信息并不会涉及列表,所以这里需要排除
+        if(message.list != null && message.list != undefined){
+            clearList();
+            $.each(message.list, function(index, item){
+                $("#list").append("<li>"+item+"</li>");
+            });
+        }
+        //让聊天区始终滚动到最下面
         var chat = $("#chat-view");
-        chat.scrollTop(chat[0].scrollHeight);   //滚动
+        chat.scrollTop(chat[0].scrollHeight);
     }
 
     function clearConsole(){
         $("#chat").html("");
+    }
+
+    function clearList(){
+        $("#list").html("");
     }
 
     function appendZero(s){return ("00"+ s).substr((s+"").length);}  //补0函数

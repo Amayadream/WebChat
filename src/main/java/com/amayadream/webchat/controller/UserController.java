@@ -160,7 +160,6 @@ public class UserController {
             String rootPath= WebUtils.getRealPath(request.getSession().getServletContext(), "/");
             String picturePath = rootPath + path;
             File file = new File(picturePath);
-            System.out.println(file.exists());
             response.setContentType("image/jpeg; charset=UTF-8");
             ServletOutputStream outputStream = response.getOutputStream();
             FileInputStream inputStream = new FileInputStream(picturePath);

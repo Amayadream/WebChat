@@ -35,16 +35,16 @@ public class LoginFilter extends OncePerRequestFilter {
             if (doFilter) {
                 // 执行过滤
                 if (null == request.getSession().getAttribute("login_status")) {
-                    System.out.println(uri+">>>>>>>=>过滤器执行过滤");
+//                    System.out.println(uri+">>>>>>>=>过滤器执行过滤");
                     response.sendRedirect(contextPath + "/login?timeout=true");
                 } else {
                     // 如果session中存在登录者实体，则继续
-                    System.out.println(uri+">>>>>>>=>过滤器=>已登录");
+//                    System.out.println(uri+">>>>>>>=>过滤器=>已登录");
                     filterChain.doFilter(request, response);
                 }
             } else {
                 // 如果不执行过滤，则继续
-                System.out.println(uri+">>>>>>>=>过滤器自动忽略");
+//                System.out.println(uri+">>>>>>>=>过滤器自动忽略");
                 filterChain.doFilter(request, response);
             }
         } else {

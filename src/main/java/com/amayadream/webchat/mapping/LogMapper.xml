@@ -22,7 +22,7 @@
     FROM
     (
     SELECT * FROM WEBCHAT_LOG
-    ORDER BY TIME
+    ORDER BY TIME DESC
     ) A
     )
     WHERE RN BETWEEN #{start} and #{end}
@@ -36,7 +36,7 @@
     (
     SELECT * FROM WEBCHAT_LOG
     WHERE USERID = #{userid, jdbcType=VARCHAR}
-    ORDER BY TIME
+    ORDER BY TIME DESC
     ) A
     )
     WHERE RN BETWEEN #{start} and #{end}

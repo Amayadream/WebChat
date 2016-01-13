@@ -14,13 +14,9 @@
 
     <!-- content start -->
     <div class="admin-content">
-        <div class="am-cf am-padding">
-            <div class="am-fl am-cf"><strong class="am-text-primary am-text-lg">聊天</strong> / <small>chat</small></div>
-        </div>
-
         <div class="" style="width: 80%;float:left;">
             <!-- 聊天区 -->
-            <div class="am-scrollable-vertical" id="chat-view" style="height: 450px;">
+            <div class="am-scrollable-vertical" id="chat-view" style="height: 510px;">
                 <ul class="am-comments-list am-comments-list-flip" id="chat">
                 </ul>
             </div>
@@ -106,7 +102,6 @@
         }else{
             layer.msg("连接已存在!", { offset: 0, shift: 6 });
         }
-
     }
 
     /**
@@ -116,6 +111,7 @@
         if(ws != null){
             ws.close();
             ws = null;
+            clearList();
             layer.msg("已经关闭连接", { offset: 0});
         }else{
             layer.msg("未开启连接", { offset: 0, shift: 6 });
@@ -170,7 +166,7 @@
                 isSef = "am-comment-flip";
             }
             var html = "<li class=\"am-comment "+isSef+" am-comment-primary\"><a href=\"#link-to-user-home\"><img width=\"48\" height=\"48\" class=\"am-comment-avatar\" alt=\"\" src=\"${ctx}/"+msg.userid+"/head\"></a><div class=\"am-comment-main\">\n" +
-                    "<header class=\"am-comment-hd\"><div class=\"am-comment-meta\">   <a class=\"am-comment-author\" href=\"#link-to-user\">"+msg.userid+"</a> 发表于<time>"+msg.sendtime+"</time></div></header><div class=\"am-comment-bd\"><p>"+msg.content+"</p></div></div></li>";
+                    "<header class=\"am-comment-hd\"><div class=\"am-comment-meta\">   <a class=\"am-comment-author\" href=\"#link-to-user\">"+msg.userid+"</a> 发表于<time> "+msg.sendtime+"</time></div></header><div class=\"am-comment-bd\"><p>"+msg.content+"</p></div></div></li>";
             output.append(html);
         }
         if(message.type == "notice"){

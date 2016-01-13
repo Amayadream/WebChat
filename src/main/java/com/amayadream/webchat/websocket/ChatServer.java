@@ -31,7 +31,7 @@ public class ChatServer {
     private String userid;      //用户名
     private HttpSession httpSession;    //request的session
 
-    private static List list = new ArrayList<>();
+    private static List list = new ArrayList<>();   //在线列表,记录用户名称
 
     /**
      * 连接建立成功调用的方法
@@ -97,7 +97,7 @@ public class ChatServer {
     }
 
     /**
-     * 获取特定格式的message
+     * 对message进行组装
      * @param message
      * @param type
      * @return

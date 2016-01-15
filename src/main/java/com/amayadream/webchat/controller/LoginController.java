@@ -60,7 +60,7 @@ public class LoginController {
     }
 
     @RequestMapping(value = "logout")
-    public String logout(HttpSession session, RedirectAttributes attributes, WordDefined defined, HttpServletRequest request, LogUtil logUtil, DateUtil dateUtil, NetUtil netUtil){
+    public String logout(HttpSession session, RedirectAttributes attributes, WordDefined defined){
         session.removeAttribute("userid");
         session.removeAttribute("login_status");
         attributes.addFlashAttribute("message", defined.LOGOUT_SUCCESS);

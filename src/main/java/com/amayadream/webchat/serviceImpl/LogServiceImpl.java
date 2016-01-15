@@ -49,6 +49,13 @@ public class LogServiceImpl implements ILogService {
     }
 
     @Override
+    public int selectCountByUserid(String userid, int pageSize) {
+        int pageCount = Integer.parseInt(logDao.selectCountByUserid(userid).getUserid());
+        return pageCount % pageSize == 0 ? pageCount/pageSize : pageCount/pageSize + 1;
+    }
+
+
+    @Override
     public boolean insert(Log log) {
         return logDao.insert(log);
     }

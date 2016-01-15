@@ -17,6 +17,7 @@ public interface ILogDao {
     List<Log> selectAll(@Param("start") int start, @Param("end") int end);
     List<Log> selectLogByUserid(@Param("userid") String userid, @Param("start") int start, @Param("end") int end);
     Log selectCount();
+    Log selectCountByUserid(@Param("userid") String userid);
     boolean insert(Log log);
     boolean delete(String id);
     boolean deleteThisUser(String userid);

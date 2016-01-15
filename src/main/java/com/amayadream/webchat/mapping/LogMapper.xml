@@ -47,6 +47,12 @@
     FROM WEBCHAT_LOG
   </select>
 
+  <select id="selectCountByUserid" resultMap="BaseResultMap" >
+    SELECT COUNT(*) USERID
+    FROM WEBCHAT_LOG
+    WHERE USERID = #{userid, jdbcType=VARCHAR}
+  </select>
+
   <insert id="insert" parameterType="com.amayadream.webchat.pojo.Log">
     INSERT INTO WEBCHAT_LOG (ID, USERID, TIME, TYPE, DETAIL, IP)
     VALUES (sys_guid(), #{userid, jdbcType=VARCHAR}, #{time, jdbcType=VARCHAR}, #{type, jdbcType=INTEGER},

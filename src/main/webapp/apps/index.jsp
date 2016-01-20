@@ -24,6 +24,9 @@
             <div class="am-form-group am-form">
                 <textarea class="" id="message" name="message" rows="5"  placeholder="这里输入你想发送的信息..."></textarea>
             </div>
+            <div class="" style="float: left">
+                <p class="am-kai">发送给 : <span id="sendto">全体成员</span><button class="am-btn am-btn-xs am-btn-danger" onclick="$('#sendto').text('全体成员')">复位</button></p>
+            </div>
             <!-- 按钮区 -->
             <div class="am-btn-group am-btn-group-xs" style="float:right;">
                 <button class="am-btn am-btn-default" type="button" onclick="getConnection()"><span class="am-icon-plug"></span> 连接</button>
@@ -39,7 +42,7 @@
             <div class="am-panel-hd">
                 <h3 class="am-panel-title">在线列表</h3>
             </div>
-            <ul class="am-list am-list-static am-list-striped" id="list" style="text-align: center">
+            <ul class="am-list am-list-static am-list-striped" id="list">
 
             </ul>
         </div>
@@ -54,7 +57,7 @@
 <script>
     if("${message}"){
         layer.msg('${message}', {
-            offset: 0,
+            offset: 0
         });
     }
     if("${error}"){
@@ -135,22 +138,23 @@
     function sendMessage(){
         if(ws == null){
             layer.msg("连接未开启!", { offset: 0, shift: 6 });
-        }else{
-            var message = $("#message").val();
-            if(message != null && message != ""){
-                ws.send(JSON.stringify({
-                    message : {
-                        content : message,
-                        from : '${userid}',
-                        to : 'Amayadream',      //接收人,如果没有则置空,如果有多个接收人则用,分隔
-                        time : getDateFull()
-                    },
-                    type : "message"
-                }));
-            }else{
-                layer.msg("请不要惜字如金!", { offset: 0, shift: 6 });
-            }
+            return;
         }
+        var message = $("#message").val();
+        var to = $("#sendto").text() == "全体成员"? "": $("#sendto").text();
+        if(message == null || message == ""){
+            layer.msg("请不要惜字如金!", { offset: 0, shift: 6 });
+            return;
+        }
+        ws.send(JSON.stringify({
+            message : {
+                content : message,
+                from : '${userid}',
+                to : to,      //接收人,如果没有则置空,如果有多个接收人则用,分隔
+                time : getDateFull()
+            },
+            type : "message"
+        }));
     }
 
     /**
@@ -160,6 +164,7 @@
     function showMessage(message){
         message = JSON.parse(message);
         var msg = message.message;
+        var to = msg.to == null || msg.to ==""? "全体成员" : msg.to;
         var output = $("#chat");
         if(message.type == "message"){     //判断消息类型
             var isSef = "";
@@ -167,7 +172,7 @@
                 isSef = "am-comment-flip";
             }
             var html = "<li class=\"am-comment "+isSef+" am-comment-primary\"><a href=\"#link-to-user-home\"><img width=\"48\" height=\"48\" class=\"am-comment-avatar\" alt=\"\" src=\"${ctx}/"+msg.from+"/head\"></a><div class=\"am-comment-main\">\n" +
-                    "<header class=\"am-comment-hd\"><div class=\"am-comment-meta\">   <a class=\"am-comment-author\" href=\"#link-to-user\">"+msg.from+"</a> 发表于<time> "+msg.time+"</time></div></header><div class=\"am-comment-bd\"><p>"+msg.content+"</p></div></div></li>";
+                    "<header class=\"am-comment-hd\"><div class=\"am-comment-meta\">   <a class=\"am-comment-author\" href=\"#link-to-user\">"+msg.from+"</a> 发表于<time> "+msg.time+"</time> 发送给: "+to+" </div></header><div class=\"am-comment-bd\"> <p>"+msg.content+"</p></div></div></li>";
             output.append(html);
         }
         if(message.type == "notice"){
@@ -178,12 +183,21 @@
         if(message.list != null && message.list != undefined){
             clearList();
             $.each(message.list, function(index, item){
-                $("#list").append("<li>"+item+"</li>");
+                var li = "<li>"+item+"</li>";
+                if('${userid}' != item){    //排除自己
+                    li = "<li>"+item+" <button type=\"button\" class=\"am-btn am-btn-xs am-btn-primary am-round\" onclick=\"addChat('"+item+"');\"><span class=\"am-icon-phone\"><span> 私聊</button></li>";
+                }
+                $("#list").append(li);
             });
         }
         //让聊天区始终滚动到最下面
         var chat = $("#chat-view");
         chat.scrollTop(chat[0].scrollHeight);
+    }
+
+    //修改发送对象,这里可以自行解锁多用户私聊,用,分隔开用户名即可
+    function addChat(user){
+        $("#sendto").text(user);
     }
 
     function clearConsole(){

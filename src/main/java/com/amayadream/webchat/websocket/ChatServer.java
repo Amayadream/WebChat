@@ -71,13 +71,15 @@ public class ChatServer {
     public void onMessage(String _message) {
         JSONObject chat = JSON.parseObject(_message);
         JSONObject message = JSON.parseObject(chat.get("message").toString());
-        if(message.get("to") == null){      //如果to为空,则广播;如果不为空,则对指定的用户发送消息
+        if(message.get("to") == null || message.get("to").equals("")){      //如果to为空,则广播;如果不为空,则对指定的用户发送消息
             broadcast(_message);
         }else{
-            String [] userlist = routetab.get(message.get("to")).toString().split(",");
+            String [] userlist = message.get("to").toString().split(",");
             singleSend(_message, (Session) routetab.get(message.get("from")));      //发送给自己,这个别忘了
             for(String user : userlist){
-                singleSend(_message, (Session) routetab.get(user));     //分别发送给每个指定用户
+                if(!user.equals(message.get("from"))){
+                    singleSend(_message, (Session) routetab.get(user));     //分别发送给每个指定用户
+                }
             }
         }
     }
@@ -121,10 +123,10 @@ public class ChatServer {
     }
 
     /**
-     * 组装message
-     * @param message
-     * @param type
-     * @param list
+     * 组装返回给前台的消息
+     * @param message   交互信息
+     * @param type      信息类型
+     * @param list      在线列表
      * @return
      */
     public String getMessage(String message, String type, List list){

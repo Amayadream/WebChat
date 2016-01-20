@@ -39,10 +39,8 @@ public class UserController {
      * @return
      */
     @RequestMapping(value = "chat")
-    public ModelAndView getIndex(ChatServer websocket){
+    public ModelAndView getIndex(){
         ModelAndView view = new ModelAndView("apps/index");
-//        int onlineCount = websocket.getOnlineCount();
-//        view.addObject("online", onlineCount);
         return view;
     }
 

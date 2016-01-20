@@ -1,6 +1,7 @@
 package com.amayadream.webchat.websocket;
 
-import org.json.JSONObject;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -9,7 +10,9 @@ import javax.websocket.*;
 import javax.websocket.server.ServerEndpoint;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.CopyOnWriteArraySet;
 
 /**
@@ -20,18 +23,14 @@ import java.util.concurrent.CopyOnWriteArraySet;
  */
 @ServerEndpoint(value = "/chatServer", configurator = HttpSessionConfigurator.class)
 public class ChatServer {
-    Logger logger = LoggerFactory.getLogger(ChatServer.class);
-
     private static int onlineCount = 0; //静态变量，用来记录当前在线连接数。应该把它设计成线程安全的。
-
-    //concurrent包的线程安全Set，用来存放每个客户端对应的MyWebsocket对象。若要实现服务端与单一客户端通信的话，可以使用Map来存放，其中Key可以为用户标识
     private static CopyOnWriteArraySet<ChatServer> webSocketSet = new CopyOnWriteArraySet<ChatServer>();
-
     private Session session;    //与某个客户端的连接会话，需要通过它来给客户端发送数据
     private String userid;      //用户名
     private HttpSession httpSession;    //request的session
 
     private static List list = new ArrayList<>();   //在线列表,记录用户名称
+    private static Map routetab = new HashMap<>();  //用户名和websocket的session绑定的路由表
 
     /**
      * 连接建立成功调用的方法
@@ -44,9 +43,10 @@ public class ChatServer {
         addOnlineCount();           //在线数加1;
         this.httpSession = (HttpSession) config.getUserProperties().get(HttpSession.class.getName());
         this.userid=(String) httpSession.getAttribute("userid");    //获取当前用户
-        list.add(userid);
-        String message = getNotice("[" + userid + "]加入聊天室,当前在线人数为"+getOnlineCount()+"位", list, "notice");
-        broadcast(message);
+        list.add(userid);           //将用户名加入在线列表
+        routetab.put(userid, session);   //将用户名和session绑定到路由表
+        String message = getMessage("[" + userid + "]加入聊天室,当前在线人数为"+getOnlineCount()+"位", "notice",  list);
+        broadcast(message);     //广播
     }
 
     /**
@@ -56,19 +56,30 @@ public class ChatServer {
     public void onClose(){
         webSocketSet.remove(this);  //从set中删除
         subOnlineCount();           //在线数减1
-        list.remove(userid);
-        String message = getNotice("[" + userid +"]离开了聊天室,当前在线人数为"+getOnlineCount()+"位", list, "notice");
-        broadcast(message);
+        list.remove(userid);        //从在线列表移除这个用户
+        routetab.remove(userid);
+        String message = getMessage("[" + userid +"]离开了聊天室,当前在线人数为"+getOnlineCount()+"位", "notice", list);
+        broadcast(message);         //广播
     }
 
     /**
-     * 收到客户端消息后调用的方法
+     * 接收客户端的message,判断是否有接收人而选择进行广播还是指定发送
      * @param message 客户端发送过来的消息
      * @param session 可选的参数
      */
     @OnMessage
-    public void onMessage(String message) {
-        broadcast(message);
+    public void onMessage(String _message) {
+        JSONObject chat = JSON.parseObject(_message);
+        JSONObject message = JSON.parseObject(chat.get("message").toString());
+        if(message.get("to") == null){      //如果to为空,则广播;如果不为空,则对指定的用户发送消息
+            broadcast(_message);
+        }else{
+            String [] userlist = routetab.get(message.get("to")).toString().split(",");
+            singleSend(_message, (Session) routetab.get(message.get("from")));      //发送给自己,这个别忘了
+            for(String user : userlist){
+                singleSend(_message, (Session) routetab.get(user));     //分别发送给每个指定用户
+            }
+        }
     }
 
     /**
@@ -97,16 +108,30 @@ public class ChatServer {
     }
 
     /**
-     * 对message进行组装
+     * 对特定用户发送消息
+     * @param message
+     * @param session
+     */
+    public void singleSend(String message, Session session){
+        try {
+            session.getBasicRemote().sendText(message);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * 组装message
      * @param message
      * @param type
+     * @param list
      * @return
      */
-    public String getNotice(String message, List list, String type){
+    public String getMessage(String message, String type, List list){
         JSONObject member = new JSONObject();
         member.put("message", message);
-        member.put("list", list);
         member.put("type", type);
+        member.put("list", list);
         return member.toString();
     }
 

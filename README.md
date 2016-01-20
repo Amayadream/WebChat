@@ -2,9 +2,13 @@
 
 ##一.所用技术
 项目使用Maven构建,后台使用的语言是JAVA
+
 框架为Spring + Spring MVC + Mybatis
+
 数据库使用的是Oracle 10g
+
 前端采用[Amaze UI](http://amazeui.org/),弹窗和分页使用的是[Layer](www.layui.com),当然还有[Jquery](http://jquery.com/)...
+
 开发工具使用的是[IntelliJ IDEA 15.0.1](http://www.jetbrains.com/idea/)
 
 ##二.数据交互格式
@@ -34,5 +38,8 @@ list是当前在线的用户名的列表,只在后台触发onopen和onclose时�
 
 ##四.使用方法
 数据库:在resources/sql/webchat.dmp或者webchat.sql
+
 JAR包:在resources/jar,这里放了所有用到的JAR包,方便不会maven的同学,不过还是建议学一学maven
-项目直接导入eclipse或者idea即可,注意是maven构建的,非maven自行下载jar包并构建项目即可(oracle的jar包在我本地的maven,因为版权问题你懂的,自行解决)
+
+项目直接导入eclipse或者idea即可,注意是maven构建的(oracle的jar包在我本地的maven,因为版权问题你懂的,自行解决)
+

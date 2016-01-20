@@ -141,8 +141,9 @@
                 ws.send(JSON.stringify({
                     message : {
                         content : message,
-                        userid : '${userid}',
-                        sendtime : getDateFull()
+                        from : '${userid}',
+                        to : 'Amayadream',      //接收人,如果没有则置空,如果有多个接收人则用,分隔
+                        time : getDateFull()
                     },
                     type : "message"
                 }));
@@ -162,11 +163,11 @@
         var output = $("#chat");
         if(message.type == "message"){     //判断消息类型
             var isSef = "";
-            if('${userid}' == msg.userid){
+            if('${userid}' == msg.from){
                 isSef = "am-comment-flip";
             }
-            var html = "<li class=\"am-comment "+isSef+" am-comment-primary\"><a href=\"#link-to-user-home\"><img width=\"48\" height=\"48\" class=\"am-comment-avatar\" alt=\"\" src=\"${ctx}/"+msg.userid+"/head\"></a><div class=\"am-comment-main\">\n" +
-                    "<header class=\"am-comment-hd\"><div class=\"am-comment-meta\">   <a class=\"am-comment-author\" href=\"#link-to-user\">"+msg.userid+"</a> 发表于<time> "+msg.sendtime+"</time></div></header><div class=\"am-comment-bd\"><p>"+msg.content+"</p></div></div></li>";
+            var html = "<li class=\"am-comment "+isSef+" am-comment-primary\"><a href=\"#link-to-user-home\"><img width=\"48\" height=\"48\" class=\"am-comment-avatar\" alt=\"\" src=\"${ctx}/"+msg.from+"/head\"></a><div class=\"am-comment-main\">\n" +
+                    "<header class=\"am-comment-hd\"><div class=\"am-comment-meta\">   <a class=\"am-comment-author\" href=\"#link-to-user\">"+msg.from+"</a> 发表于<time> "+msg.time+"</time></div></header><div class=\"am-comment-bd\"><p>"+msg.content+"</p></div></div></li>";
             output.append(html);
         }
         if(message.type == "notice"){

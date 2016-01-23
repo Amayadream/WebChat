@@ -55,6 +55,29 @@
 <jsp:include page="include/footer.jsp"/>
 
 <script>
+    $(function () {
+        context.init({preventDoubleContext: false});
+        context.settings({compress: true});
+        context.attach('#chat-view', [
+            {header: '操作菜单',},
+            {text: '清理', action: clearConsole},
+            {divider: true},
+            {
+                text: '选项', subMenu: [
+                {header: '连接选项'},
+                {text: '检查', action: checkConnection},
+                {text: '连接', action: getConnection},
+                {text: '断开', action: closeConnection}
+            ]
+            },
+            {
+                text: '销毁菜单', action: function (e) {
+                e.preventDefault();
+                context.destroy('#chat-view');
+            }
+            }
+        ]);
+    });
     if("${message}"){
         layer.msg('${message}', {
             offset: 0
@@ -66,7 +89,6 @@
             shift: 6
         });
     }
-
     var wsServer = null;
     var ws = null;
     wsServer = "ws://" + location.host+"${pageContext.request.contextPath}" + "/chatServer";
@@ -163,19 +185,19 @@
      */
     function showMessage(message){
         message = JSON.parse(message);
-        var msg = message.message;
-        var to = msg.to == null || msg.to ==""? "全体成员" : msg.to;
+        var msg = message.message;      //获取消息部分
+        var to = msg.to == null || msg.to ==""? "全体成员" : msg.to;    //获取接收人
         var output = $("#chat");
         if(message.type == "message"){     //判断消息类型
             var isSef = "";
-            if('${userid}' == msg.from){
+            if('${userid}' == msg.from){    //如果是自己则显示在右边
                 isSef = "am-comment-flip";
             }
             var html = "<li class=\"am-comment "+isSef+" am-comment-primary\"><a href=\"#link-to-user-home\"><img width=\"48\" height=\"48\" class=\"am-comment-avatar\" alt=\"\" src=\"${ctx}/"+msg.from+"/head\"></a><div class=\"am-comment-main\">\n" +
                     "<header class=\"am-comment-hd\"><div class=\"am-comment-meta\">   <a class=\"am-comment-author\" href=\"#link-to-user\">"+msg.from+"</a> 发表于<time> "+msg.time+"</time> 发送给: "+to+" </div></header><div class=\"am-comment-bd\"> <p>"+msg.content+"</p></div></div></li>";
             output.append(html);
         }
-        if(message.type == "notice"){
+        if(message.type == "notice"){   //判断消息类型
             var notice = "<div><p class=\"am-text-success\" style=\"text-align:center\"><span class=\"am-icon-bell\"></span> "+msg+"</p></div>";
             output.append(notice);
         }
@@ -215,6 +237,11 @@
         var currentdate = date.getFullYear() + "-" + appendZero(date.getMonth() + 1) + "-" + appendZero(date.getDate()) + " " + appendZero(date.getHours()) + ":" + appendZero(date.getMinutes()) + ":" + appendZero(date.getSeconds());
         return currentdate;
     }
+
+    function asd(){
+
+    }
+
 </script>
 </body>
 </html>

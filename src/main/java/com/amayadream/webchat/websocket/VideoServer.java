@@ -12,7 +12,7 @@ import java.util.Map;
  * Date   :  2016.01.23 17:20
  * TODO   :
  */
-@ServerEndpoint(value = "/cideoServer", configurator = HttpSessionConfigurator.class)
+@ServerEndpoint(value = "/videoServer", configurator = HttpSessionConfigurator.class)
 public class VideoServer {
     private static final int MAX_CONNECTION = 20;
     private static final long MAX_TIMEOUT = 2 * 60 * 1000;
@@ -21,7 +21,7 @@ public class VideoServer {
 
     @OnOpen
     public void onOpen(Session session){
-
+        System.out.println("onOpen");
     }
 
     @OnMessage
@@ -35,7 +35,7 @@ public class VideoServer {
     }
 
     @OnError
-    public void onError(){
-
+    public void onError(Throwable error){
+        error.printStackTrace();
     }
 }

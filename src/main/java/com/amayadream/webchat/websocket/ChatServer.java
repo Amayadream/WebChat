@@ -14,10 +14,9 @@ import java.util.Map;
 import java.util.concurrent.CopyOnWriteArraySet;
 
 /**
- * NAME   :  restdemo/com.amayadream.rest.controller
- * Author :  Amayadream
- * Date   :  2016.01.08 09:50
- * TODO   :  ChatServer
+ * websocket服务
+ * @author  :  Amayadream
+ * @time   :  2016.01.08 09:50
  */
 @ServerEndpoint(value = "/chatServer", configurator = HttpSessionConfigurator.class)
 public class ChatServer {
@@ -62,8 +61,7 @@ public class ChatServer {
 
     /**
      * 接收客户端的message,判断是否有接收人而选择进行广播还是指定发送
-     * @param message 客户端发送过来的消息
-     * @param session 可选的参数
+     * @param _message 客户端发送过来的消息
      */
     @OnMessage
     public void onMessage(String _message) {
@@ -84,7 +82,6 @@ public class ChatServer {
 
     /**
      * 发生错误时调用
-     * @param session
      * @param error
      */
     @OnError

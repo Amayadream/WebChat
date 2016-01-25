@@ -168,6 +168,7 @@
             layer.msg("请不要惜字如金!", { offset: 0, shift: 6 });
             return;
         }
+        tuling(message);
         ws.send(JSON.stringify({
             message : {
                 content : message,
@@ -238,8 +239,23 @@
         return currentdate;
     }
 
-    function asd(){
-
+    /**
+     * 图灵机器人,如果不需要可以去掉sendMessage()中的tuling(message);
+     * @param message
+     */
+    function tuling(message){
+        var html;
+        $.getJSON("http://www.tuling123.com/openapi/api?key=6ad8b4d96861f17d68270216c880d5e3&info=" + message,function(data){
+            if(data.code == 100000){
+                html = "<li class=\"am-comment am-comment-primary\"><a href=\"#link-to-user-home\"><img width=\"48\" height=\"48\" class=\"am-comment-avatar\" alt=\"\" src=\"${ctx}/static/img/robot.jpg\"></a><div class=\"am-comment-main\">\n" +
+                        "<header class=\"am-comment-hd\"><div class=\"am-comment-meta\">   <a class=\"am-comment-author\" href=\"#link-to-user\">Robot</a> 发表于<time> "+getDateFull()+"</time> 发送给: 全体成员</div></header><div class=\"am-comment-bd\"> <p>"+data.text+"</p></div></div></li>";
+            }
+            if(data.code == 200000){
+                html = "<li class=\"am-comment am-comment-primary\"><a href=\"#link-to-user-home\"><img width=\"48\" height=\"48\" class=\"am-comment-avatar\" alt=\"\" src=\"${ctx}/static/img/robot.jpg\"></a><div class=\"am-comment-main\">\n" +
+                        "<header class=\"am-comment-hd\"><div class=\"am-comment-meta\">   <a class=\"am-comment-author\" href=\"#link-to-user\">Robot</a> 发表于<time> "+getDateFull()+"</time> 发送给: 全体成员</div></header><div class=\"am-comment-bd\"> <p>"+data.text+"</p><img src=\"data.url\"></div></div></li>";
+            }
+            $("#chat").append(html);
+        });
     }
 
 </script>

@@ -24,6 +24,7 @@
             <div class="am-form-group am-form">
                 <textarea class="" id="message" name="message" rows="5"  placeholder="这里输入你想发送的信息..."></textarea>
             </div>
+            <!-- 接收者 -->
             <div class="" style="float: left">
                 <p class="am-kai">发送给 : <span id="sendto">全体成员</span><button class="am-btn am-btn-xs am-btn-danger" onclick="$('#sendto').text('全体成员')">复位</button></p>
             </div>
@@ -36,7 +37,6 @@
                 <button class="am-btn am-btn-default" type="button" onclick="sendMessage()"><span class="am-icon-commenting"></span> 发送</button>
             </div>
         </div>
-
         <!-- 列表区 -->
         <div class="am-panel am-panel-default" style="float:right;width: 20%;">
             <div class="am-panel-hd">
@@ -92,14 +92,15 @@
         });
     }
     $("#tuling").click(function(){
-        var tuling = $(this);
         var onlinenum = $("#onlinenum").text();
-        if(tuling.text() == "未上线"){
-            tuling.text("已上线").removeClass("am-btn-danger").addClass("am-btn-success");
+        if($(this).text() == "未上线"){
+            $(this).text("已上线").removeClass("am-btn-danger").addClass("am-btn-success");
+            showNotice("图灵机器人加入聊天室");
             $("#onlinenum").text(parseInt(onlinenum) + 1);
         }
         else{
-            tuling.text("未上线").removeClass("am-btn-success").addClass("am-btn-danger");
+            $(this).text("未上线").removeClass("am-btn-success").addClass("am-btn-danger");
+            showNotice("图灵机器人离开聊天室");
             $("#onlinenum").text(parseInt(onlinenum) - 1)
         }
     });
@@ -111,7 +112,7 @@
         layer.msg("已经建立连接", { offset: 0});
     };
     ws.onmessage = function (evt) {
-        showMessage(evt.data)
+        analysisMessage(evt.data);  //解析后台传回的消息,并予以展示
     };
     ws.onerror = function (evt) {
         layer.msg("产生异常", { offset: 0});
@@ -130,7 +131,7 @@
                 layer.msg("成功建立连接!", { offset: 0});
             };
             ws.onmessage = function (evt) {
-                showMessage(evt.data)
+                analysisMessage(evt.data);  //解析后台传回的消息,并予以展示
             };
             ws.onerror = function (evt) {
                 layer.msg("产生异常", { offset: 0});
@@ -150,7 +151,7 @@
         if(ws != null){
             ws.close();
             ws = null;
-            clearList();
+            $("#list").html("");    //清空在线列表
             layer.msg("已经关闭连接", { offset: 0});
         }else{
             layer.msg("未开启连接", { offset: 0, shift: 6 });
@@ -188,72 +189,72 @@
                 content : message,
                 from : '${userid}',
                 to : to,      //接收人,如果没有则置空,如果有多个接收人则用,分隔
-                time : getDateFull()
+                time : getDateFull
             },
             type : "message"
         }));
     }
 
     /**
-     * 将消息展示到消息区
-     * @param message
+     * 解析后台传来的消息
+     * "massage" : {
+     *              "from" : "xxx",
+     *              "to" : "xxx",
+     *              "content" : "xxx",
+     *              "time" : "xxxx.xx.xx"
+     *          },
+     * "type" : {notice|message},
+     * "list" : {[xx],[xx],[xx]}
      */
-    function showMessage(message){
+    function analysisMessage(message){
         message = JSON.parse(message);
-        var msg = message.message;      //获取消息部分
-        var to = msg.to == null || msg.to ==""? "全体成员" : msg.to;    //获取接收人
-        var output = $("#chat");
-        if(message.type == "message"){     //判断消息类型
-            var isSef = "";
-            if('${userid}' == msg.from){    //如果是自己则显示在右边
-                isSef = "am-comment-flip";
-            }
-            var html = "<li class=\"am-comment "+isSef+" am-comment-primary\"><a href=\"#link-to-user-home\"><img width=\"48\" height=\"48\" class=\"am-comment-avatar\" alt=\"\" src=\"${ctx}/"+msg.from+"/head\"></a><div class=\"am-comment-main\">\n" +
-                    "<header class=\"am-comment-hd\"><div class=\"am-comment-meta\">   <a class=\"am-comment-author\" href=\"#link-to-user\">"+msg.from+"</a> 发表于<time> "+msg.time+"</time> 发送给: "+to+" </div></header><div class=\"am-comment-bd\"> <p>"+msg.content+"</p></div></div></li>";
-            output.append(html);
-            alert($("#chat li").length);
+        if(message.type == "message"){      //会话消息
+            showChat(message.message);
         }
-        if(message.type == "notice"){   //判断消息类型
-            var notice = "<div><p class=\"am-text-success\" style=\"text-align:center\"><span class=\"am-icon-bell\"></span> "+msg+"</p></div>";
-            output.append(notice);
+        if(message.type == "notice"){       //提示消息
+            showNotice(message.message);
         }
-        //在后台发生OnOpen()和OnClose()的时候会返回用户列表,这里显示到前台,普通的传递信息并不会涉及列表,所以这里需要排除
-        if(message.list != null && message.list != undefined){
-            clearList();
-            $.each(message.list, function(index, item){
-                var li = "<li>"+item+"</li>";
-                if('${userid}' != item){    //排除自己
-                    li = "<li>"+item+" <button type=\"button\" class=\"am-btn am-btn-xs am-btn-primary am-round\" onclick=\"addChat('"+item+"');\"><span class=\"am-icon-phone\"><span> 私聊</button></li>";
-                }
-                $("#list").append(li);
-                $("#onlinenum").text($("#list li").length);
-            });
+        if(message.list != null && message.list != undefined){      //在线列表
+            showOnline(message.list);
         }
-        //让聊天区始终滚动到最下面
+    }
+
+    /**
+     * 展示提示信息
+     */
+    function showNotice(notice){
+        $("#chat").append("<div><p class=\"am-text-success\" style=\"text-align:center\"><span class=\"am-icon-bell\"></span> "+notice+"</p></div>");
         var chat = $("#chat-view");
-        chat.scrollTop(chat[0].scrollHeight);
+        chat.scrollTop(chat[0].scrollHeight);   //让聊天区始终滚动到最下面
+    }
+
+    /**
+     * 展示会话信息
+     */
+    function showChat(message){
+        var to = message.to == null || message.to == ""? "全体成员" : message.to;   //获取接收人
+        var isSef = '${userid}' == message.from ? "am-comment-flip" : "";   //如果是自己则显示在右边,他人信息显示在左边
+        var html = "<li class=\"am-comment "+isSef+" am-comment-primary\"><a href=\"#link-to-user-home\"><img width=\"48\" height=\"48\" class=\"am-comment-avatar\" alt=\"\" src=\"${ctx}/"+message.from+"/head\"></a><div class=\"am-comment-main\">\n" +
+                "<header class=\"am-comment-hd\"><div class=\"am-comment-meta\">   <a class=\"am-comment-author\" href=\"#link-to-user\">"+message.from+"</a> 发表于<time> "+message.time+"</time> 发送给: "+to+" </div></header><div class=\"am-comment-bd\"> <p>"+message.content+"</p></div></div></li>";
+        $("#chat").append(html);
         $("#message").val("");  //清空输入区
+        var chat = $("#chat-view");
+        chat.scrollTop(chat[0].scrollHeight);   //让聊天区始终滚动到最下面
     }
 
-    //修改发送对象,这里可以自行解锁多用户私聊,用,分隔开用户名即可
-    function addChat(user){
-        $("#sendto").text(user);
-    }
-
-    function clearConsole(){
-        $("#chat").html("");
-    }
-
-    function clearList(){
-        $("#list").html("");
-    }
-
-    function appendZero(s){return ("00"+ s).substr((s+"").length);}  //补0函数
-
-    function getDateFull(){
-        var date = new Date();
-        var currentdate = date.getFullYear() + "-" + appendZero(date.getMonth() + 1) + "-" + appendZero(date.getDate()) + " " + appendZero(date.getHours()) + ":" + appendZero(date.getMinutes()) + ":" + appendZero(date.getSeconds());
-        return currentdate;
+    /**
+     * 展示在线列表
+     */
+    function showOnline(list){
+        $("#list").html("");    //清空在线列表
+        $.each(list, function(index, item){     //添加私聊按钮
+            var li = "<li>"+item+"</li>";
+            if('${userid}' != item){    //排除自己
+                li = "<li>"+item+" <button type=\"button\" class=\"am-btn am-btn-xs am-btn-primary am-round\" onclick=\"addChat('"+item+"');\"><span class=\"am-icon-phone\"><span> 私聊</button></li>";
+            }
+            $("#list").append(li);
+        });
+        $("#onlinenum").text($("#list li").length);     //获取在线人数
     }
 
     /**
@@ -262,7 +263,7 @@
      */
     function tuling(message){
         var html;
-        $.getJSON("http://www.tuling123.com/openapi/api?key=6ad8b4d96861f17d68270216c880d5e3&info=" + message,function(data){
+        $.getJSON("http://www.tuling123.com/openapi/api?key=6ad8b4d96861f17d68270216c880d5e1&info=" + message,function(data){
             if(data.code == 100000){
                 html = "<li class=\"am-comment am-comment-primary\"><a href=\"#link-to-user-home\"><img width=\"48\" height=\"48\" class=\"am-comment-avatar\" alt=\"\" src=\"${ctx}/static/img/robot.jpg\"></a><div class=\"am-comment-main\">\n" +
                         "<header class=\"am-comment-hd\"><div class=\"am-comment-meta\">   <a class=\"am-comment-author\" href=\"#link-to-user\">Robot</a> 发表于<time> "+getDateFull()+"</time> 发送给: ${userid}</div></header><div class=\"am-comment-bd\"> <p>"+data.text+"</p></div></div></li>";
@@ -278,6 +279,29 @@
         });
     }
 
+    //修改发送对象,这里可以自行解锁多用户私聊,用,分隔开用户名即可
+    function addChat(user){
+        var sendto = $("#sendto");
+        var receive = sendto.text() == "全体成员" ? "" : sendto.text() + ",";
+        if(receive.indexOf(user) == -1){    //排除重复
+            sendto.text(receive + user);
+        }
+    }
+
+    /**
+     * 清空聊天区
+     */
+    function clearConsole(){
+        $("#chat").html("");
+    }
+
+    function appendZero(s){return ("00"+ s).substr((s+"").length);}  //补0函数
+
+    function getDateFull(){
+        var date = new Date();
+        var currentdate = date.getFullYear() + "-" + appendZero(date.getMonth() + 1) + "-" + appendZero(date.getDate()) + " " + appendZero(date.getHours()) + ":" + appendZero(date.getMinutes()) + ":" + appendZero(date.getSeconds());
+        return currentdate;
+    }
 </script>
 </body>
 </html>

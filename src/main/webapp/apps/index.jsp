@@ -40,10 +40,12 @@
         <!-- 列表区 -->
         <div class="am-panel am-panel-default" style="float:right;width: 20%;">
             <div class="am-panel-hd">
-                <h3 class="am-panel-title">在线列表</h3>
+                <h3 class="am-panel-title">在线列表 [<span id="onlinenum"></span>]</h3>
             </div>
+            <ul class="am-list am-list-static am-list-striped" >
+                <li>图灵机器人 <button class="am-btn am-btn-xs am-btn-danger" id="tuling" data-am-button>未上线</button></li>
+            </ul>
             <ul class="am-list am-list-static am-list-striped" id="list">
-
             </ul>
         </div>
     </div>
@@ -89,6 +91,18 @@
             shift: 6
         });
     }
+    $("#tuling").click(function(){
+        var tuling = $(this);
+        var onlinenum = $("#onlinenum").text();
+        if(tuling.text() == "未上线"){
+            tuling.text("已上线").removeClass("am-btn-danger").addClass("am-btn-success");
+            $("#onlinenum").text(parseInt(onlinenum) + 1);
+        }
+        else{
+            tuling.text("未上线").removeClass("am-btn-success").addClass("am-btn-danger");
+            $("#onlinenum").text(parseInt(onlinenum) - 1)
+        }
+    });
     var wsServer = null;
     var ws = null;
     wsServer = "ws://" + location.host+"${pageContext.request.contextPath}" + "/chatServer";
@@ -168,7 +182,7 @@
             layer.msg("请不要惜字如金!", { offset: 0, shift: 6 });
             return;
         }
-        tuling(message);
+        $("#tuling").text() == "已上线"? tuling(message):console.log("图灵机器人未开启");  //检测是否加入图灵机器人
         ws.send(JSON.stringify({
             message : {
                 content : message,
@@ -197,6 +211,7 @@
             var html = "<li class=\"am-comment "+isSef+" am-comment-primary\"><a href=\"#link-to-user-home\"><img width=\"48\" height=\"48\" class=\"am-comment-avatar\" alt=\"\" src=\"${ctx}/"+msg.from+"/head\"></a><div class=\"am-comment-main\">\n" +
                     "<header class=\"am-comment-hd\"><div class=\"am-comment-meta\">   <a class=\"am-comment-author\" href=\"#link-to-user\">"+msg.from+"</a> 发表于<time> "+msg.time+"</time> 发送给: "+to+" </div></header><div class=\"am-comment-bd\"> <p>"+msg.content+"</p></div></div></li>";
             output.append(html);
+            alert($("#chat li").length);
         }
         if(message.type == "notice"){   //判断消息类型
             var notice = "<div><p class=\"am-text-success\" style=\"text-align:center\"><span class=\"am-icon-bell\"></span> "+msg+"</p></div>";
@@ -211,6 +226,7 @@
                     li = "<li>"+item+" <button type=\"button\" class=\"am-btn am-btn-xs am-btn-primary am-round\" onclick=\"addChat('"+item+"');\"><span class=\"am-icon-phone\"><span> 私聊</button></li>";
                 }
                 $("#list").append(li);
+                $("#onlinenum").text($("#list li").length);
             });
         }
         //让聊天区始终滚动到最下面

@@ -4,7 +4,7 @@ import com.amayadream.webchat.pojo.Log;
 import com.amayadream.webchat.pojo.User;
 import com.amayadream.webchat.service.ILogService;
 import com.amayadream.webchat.service.IUserService;
-import com.amayadream.webchat.utils.DateUtil;
+import com.amayadream.webchat.utils.CommonDate;
 import com.amayadream.webchat.utils.LogUtil;
 import com.amayadream.webchat.utils.NetUtil;
 import com.amayadream.webchat.utils.WordDefined;
@@ -33,7 +33,7 @@ public class LoginController {
 
     @RequestMapping(value = "login", method = RequestMethod.POST)
     public String login(String userid, String password, HttpSession session, RedirectAttributes attributes,
-                        WordDefined defined, DateUtil dateUtil, LogUtil logUtil, NetUtil netUtil, HttpServletRequest request){
+                        WordDefined defined, CommonDate date, LogUtil logUtil, NetUtil netUtil, HttpServletRequest request){
         user = userService.selectUserByUserid(userid);
         if(user == null){
             attributes.addFlashAttribute("error", defined.LOGIN_USERID_ERROR);
@@ -47,10 +47,10 @@ public class LoginController {
                     attributes.addFlashAttribute("error", defined.LOGIN_USERID_DISABLED);
                     return "redirect:/login";
                 }else{
-                    logService.insert(logUtil.setLog(userid, dateUtil.getDateTime24(), defined.LOG_TYPE_LOGIN, defined.LOG_DETAIL_USER_LOGIN, netUtil.getIpAddress(request)));
+                    logService.insert(logUtil.setLog(userid, date.getTime24(), defined.LOG_TYPE_LOGIN, defined.LOG_DETAIL_USER_LOGIN, netUtil.getIpAddress(request)));
                     session.setAttribute("userid", userid);
                     session.setAttribute("login_status", true);
-                    user.setLasttime(dateUtil.getDateTime24());
+                    user.setLasttime(date.getTime24());
                     userService.update(user);
                     attributes.addFlashAttribute("message", defined.LOGIN_SUCCESS);
                     return "redirect:/chat";

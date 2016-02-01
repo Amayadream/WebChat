@@ -234,6 +234,14 @@
   </dependencies>
   <build>
     <finalName>webchat</finalName>
+
+    <!-- 解决idea不编译java里的xml -->
+    <resources>
+      <resource>
+        <directory>src/main/java</directory>
+      </resource>
+    </resources>
+
     <!-- Compile -->
     <plugins>
       <plugin>
@@ -251,10 +259,10 @@
         <artifactId>tomcat7-maven-plugin</artifactId>
         <version>2.2</version>
         <configuration>
-          <port>8089</port>
+          <port>8090</port>
           <path>/WebChat</path>
-          <uriEncoding>UTF-8</uriEncoding>
-          <server>tomcat7</server>
+          <uriEncoding>utf-8</uriEncoding>
+          <!--<server>tomcat7</server>-->
         </configuration>
       </plugin>
     </plugins>

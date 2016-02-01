@@ -258,7 +258,7 @@
     }
 
     /**
-     * 图灵机器人,如果不需要可以去掉sendMessage()中的tuling(message);
+     * 图灵机器人
      * @param message
      */
     function tuling(message){
@@ -279,7 +279,9 @@
         });
     }
 
-    //修改发送对象,这里可以自行解锁多用户私聊,用,分隔开用户名即可
+    /**
+     * 添加接收人
+     */
     function addChat(user){
         var sendto = $("#sendto");
         var receive = sendto.text() == "全体成员" ? "" : sendto.text() + ",";

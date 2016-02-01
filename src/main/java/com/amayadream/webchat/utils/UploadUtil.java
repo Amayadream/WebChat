@@ -38,7 +38,7 @@ public class UploadUtil {
             while(iter.hasNext()){
                 //取得上传文件
                 MultipartFile file = multiRequest.getFile(iter.next());
-                String prefix = fileUtil.getFilePrrfix(file);
+                String prefix = fileUtil.getFilePrefix(file);
                 if(file != null){
                     //取得当前上传文件的文件名称
                     String myFileName = file.getOriginalFilename();

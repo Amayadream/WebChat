@@ -81,10 +81,10 @@ public class UserController {
      */
     @RequestMapping(value = "{userid}/update", method = RequestMethod.POST)
     public String  update(@PathVariable("userid") String userid, @ModelAttribute("userid") String sessionid, User user, RedirectAttributes attributes,
-                          NetUtil netUtil, LogUtil logUtil, DateUtil dateUtil, WordDefined defined, HttpServletRequest request){
+                          NetUtil netUtil, LogUtil logUtil, CommonDate date, WordDefined defined, HttpServletRequest request){
         boolean flag = userService.update(user);
         if(flag){
-            logService.insert(logUtil.setLog(userid, dateUtil.getDateTime24(), defined.LOG_TYPE_UPDATE, defined.LOG_DETAIL_UPDATE_PROFILE, netUtil.getIpAddress(request)));
+            logService.insert(logUtil.setLog(userid, date.getTime24(), defined.LOG_TYPE_UPDATE, defined.LOG_DETAIL_UPDATE_PROFILE, netUtil.getIpAddress(request)));
             attributes.addFlashAttribute("message", "["+userid+"]资料更新成功!");
         }else{
             attributes.addFlashAttribute("error", "["+userid+"]资料更新失败!");
@@ -101,13 +101,13 @@ public class UserController {
      */
     @RequestMapping(value = "{userid}/pass", method = RequestMethod.POST)
     public String changePassword(@PathVariable("userid") String userid, String oldpass, String newpass, RedirectAttributes attributes,
-                                 NetUtil netUtil, LogUtil logUtil, DateUtil dateUtil, WordDefined defined, HttpServletRequest request){
+                                 NetUtil netUtil, LogUtil logUtil, CommonDate date, WordDefined defined, HttpServletRequest request){
         user = userService.selectUserByUserid(userid);
         if(oldpass.equals(user.getPassword())){
             user.setPassword(newpass);
             boolean flag = userService.update(user);
             if(flag){
-                logService.insert(logUtil.setLog(userid, dateUtil.getDateTime24(), defined.LOG_TYPE_UPDATE, defined.LOG_DETAIL_UPDATE_PASSWORD, netUtil.getIpAddress(request)));
+                logService.insert(logUtil.setLog(userid, date.getTime24(), defined.LOG_TYPE_UPDATE, defined.LOG_DETAIL_UPDATE_PASSWORD, netUtil.getIpAddress(request)));
                 attributes.addFlashAttribute("message", "["+userid+"]密码更新成功!");
             }else{
                 attributes.addFlashAttribute("error", "["+userid+"]密码更新失败!");
@@ -127,14 +127,14 @@ public class UserController {
      */
     @RequestMapping(value = "{userid}/upload")
     public String upload(@PathVariable("userid") String userid, MultipartFile file, HttpServletRequest request, UploadUtil uploadUtil,
-                         RedirectAttributes attributes, NetUtil netUtil, LogUtil logUtil, DateUtil dateUtil, WordDefined defined){
+                         RedirectAttributes attributes, NetUtil netUtil, LogUtil logUtil, CommonDate date, WordDefined defined){
         try{
             String fileurl = uploadUtil.upload(request, "upload", userid);
             user = userService.selectUserByUserid(userid);
             user.setProfilehead(fileurl);
             boolean flag = userService.update(user);
             if(flag){
-                logService.insert(logUtil.setLog(userid, dateUtil.getDateTime24(), defined.LOG_TYPE_UPDATE, defined.LOG_DETAIL_UPDATE_PROFILEHEAD, netUtil.getIpAddress(request)));
+                logService.insert(logUtil.setLog(userid, date.getTime24(), defined.LOG_TYPE_UPDATE, defined.LOG_DETAIL_UPDATE_PROFILEHEAD, netUtil.getIpAddress(request)));
                 attributes.addFlashAttribute("message", "["+userid+"]头像更新成功!");
             }else{
                 attributes.addFlashAttribute("error", "["+userid+"]头像更新失败!");

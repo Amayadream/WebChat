@@ -155,9 +155,8 @@ public class UserController {
         try {
             user = userService.selectUserByUserid(userid);
             String path = user.getProfilehead();
-            String rootPath= WebUtils.getRealPath(request.getSession().getServletContext(), "/");
+            String rootPath = request.getSession().getServletContext().getRealPath("/");
             String picturePath = rootPath + path;
-            File file = new File(picturePath);
             response.setContentType("image/jpeg; charset=UTF-8");
             ServletOutputStream outputStream = response.getOutputStream();
             FileInputStream inputStream = new FileInputStream(picturePath);

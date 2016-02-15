@@ -1,7 +1,5 @@
 package com.amayadream.webchat.utils;
 
-import org.junit.Test;
-
 import java.io.File;
 
 /**
@@ -31,7 +29,7 @@ public class CommonValidate {
      * @param n     预期长度
      * @return  大于或者等于返回true, 小于返回false
      */
-    public static boolean validateLong(String str, int n){
+    public static boolean validateLonth(String str, int n){
         try {
             return str.length() >= n;
         } catch (Exception e){

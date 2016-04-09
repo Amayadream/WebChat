@@ -4,13 +4,13 @@
         <Console name="consolePrint" target="SYSTEM_OUT">
             <PatternLayout pattern="%d{HH:mm:ss} [%t] %-5level %logger{36} - %msg%n" />
         </Console>
-        <JDBC name="databaseAppender" tableName="SYSLOG">
+        <JDBC name="databaseAppender" tableName="webchat_syslog">
             <ConnectionFactory class="com.amayadream.webchat.listener.PoolManager" method="getConnection" />
             <!--<Column name="ID" pattern=""/>-->
             <Column name="CLASS" pattern="%C" />
             <Column name="FUNCTION" pattern="%M" />
             <Column name="MESSAGE" pattern="%m" />
-            <Column name="LEAVL" pattern="%level" />
+            <Column name="LEVELS" pattern="%level" />
             <Column name="TIME" pattern="%d{yyyy-MM-dd HH:mm:ss.SSS}" />
         </JDBC>
     </appenders>

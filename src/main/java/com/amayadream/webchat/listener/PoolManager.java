@@ -1,6 +1,5 @@
 package com.amayadream.webchat.listener;
 
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
@@ -42,8 +41,8 @@ public class PoolManager {
             props.load(stream);
             driver = props.getProperty("driver");
             url = props.getProperty("url");
-//            Name = props.getProperty("username");
-//            Password = props.getProperty("password");
+            Name = props.getProperty("username");
+            Password = props.getProperty("password");
         } catch (FileNotFoundException e) {
             System.out.println("读取配置文件异常");
         } catch(IOException ie){
@@ -67,7 +66,7 @@ public class PoolManager {
     /**
      * 连接池启动
      */
-    public static void startPool(){
+    private static void startPool(){
         loadProperties();
         initDataSource();
         if (connectionPool != null) {
@@ -86,7 +85,10 @@ public class PoolManager {
         }
     }
 
-    public static void destroyPool(){
+    /**
+     * 关闭连接池
+     */
+    private static void destroyPool(){
         try {
             PoolingDriver driver = (PoolingDriver) DriverManager.getDriver("jdbc:apache:commons:dbcp:");
             driver.closePool("dbpool");
@@ -126,7 +128,7 @@ public class PoolManager {
      * freeConnection
      * @param conn
      */
-    public static void freeConnection(Connection conn){
+    private static void freeConnection(Connection conn){
         if(conn != null){
             try {
                 conn.close();

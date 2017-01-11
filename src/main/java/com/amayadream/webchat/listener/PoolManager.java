@@ -19,10 +19,10 @@ import org.junit.Test;
  * @date :  2016.04.06 20:17
  */
 public class PoolManager {
-    private static String driver = "oracle.jdbc.driver.OracleDriver";
-    private static String url = "jdbc:oracle:thin:@localhost:1521:XE";
-    private static String Name = "amayadream";
-    private static String Password = "123456";
+    private static String driver = "com.mysql.jdbc.Driver";
+    private static String url = "jdbc:mysql://127.0.0.1:3306/webchat?useUnicode=true&characterEncoding=utf-8&serverTimezone=UTC";
+    private static String Name = "root";
+    private static String Password = "root";
 
     private static Class driverClass = null;
     private static ObjectPool connectionPool = null;
@@ -36,7 +36,7 @@ public class PoolManager {
      */
     private static void loadProperties(){
         try {
-            InputStream stream = PoolManager.class.getClassLoader().getResourceAsStream("jdbc.properties");
+            InputStream stream = PoolManager.class.getClassLoader().getResourceAsStream("config/jdbc.properties");
             Properties props = new Properties();
             props.load(stream);
             driver = props.getProperty("driver");
@@ -154,7 +154,7 @@ public class PoolManager {
             Connection conn = PoolManager.getConnection();
             if(conn != null){
                 Statement statement = conn.createStatement();
-                ResultSet rs = statement.executeQuery("select * from syslog");
+                ResultSet rs = statement.executeQuery("select * from log");
                 int c = rs.getMetaData().getColumnCount();
                 while(rs.next()){
                     System.out.println();

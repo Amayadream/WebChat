@@ -33,23 +33,19 @@ public class UserController {
 
     /**
      * 聊天主页
-     * @return
      */
     @RequestMapping(value = "chat")
     public ModelAndView getIndex(){
-        ModelAndView view = new ModelAndView("apps/index");
+        ModelAndView view = new ModelAndView("index");
         return view;
     }
 
     /**
      * 显示个人信息页面
-     * @param userid
-     * @param sessionid
-     * @return
      */
     @RequestMapping(value = "{userid}", method = RequestMethod.GET)
     public ModelAndView selectUserByUserid(@PathVariable("userid") String userid, @ModelAttribute("userid") String sessionid){
-        ModelAndView view = new ModelAndView("apps/information");
+        ModelAndView view = new ModelAndView("information");
         user = userService.selectUserByUserid(userid);
         view.addObject("user", user);
         return view;
@@ -63,7 +59,7 @@ public class UserController {
      */
     @RequestMapping(value = "{userid}/config")
     public ModelAndView setting(@PathVariable("userid") String userid, @ModelAttribute("userid") String sessionid){
-        ModelAndView view = new ModelAndView("apps/info-setting");
+        ModelAndView view = new ModelAndView("info-setting");
         user = userService.selectUserByUserid(userid);
         view.addObject("user", user);
         return view;
@@ -147,7 +143,6 @@ public class UserController {
      * @param userid
      */
     @RequestMapping(value = "{userid}/head")
-    @ResponseBody
     public void head(@PathVariable("userid") String userid, HttpServletRequest request, HttpServletResponse response){
         try {
             user = userService.selectUserByUserid(userid);

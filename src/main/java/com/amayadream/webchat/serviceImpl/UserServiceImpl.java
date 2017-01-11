@@ -21,13 +21,7 @@ public class UserServiceImpl implements IUserService {
 
     @Override
     public List<User> selectAll(int page, int pageSize) {
-        int start = 1;
-        int end = pageSize;
-        if(page != 1) {
-            start = pageSize * (page - 1) + 1;
-            end = pageSize * page;
-        }
-        return userDao.selectAll(start, end);
+        return userDao.selectAll(page, pageSize);
     }
 
     @Override

@@ -5,10 +5,10 @@
 <head>
     <title> 五子棋 </title>
     <meta charset="utf-8"/>
-    <script type="text/javascript" src="${ctx}/static/js/jquery.min.js"></script>
-    <script type="text/javascript" src="${ctx}/static/js/jcanvas.min.js"></script>
-    <script type="text/javascript" src="${ctx}/static/js/board.js"></script>
-    <script type="text/javascript" src="${ctx}/static/js/ai2.min.js"></script>
+    <script type="text/javascript" src="${ctx}/static/source/js/jquery.min.js"></script>
+    <script type="text/javascript" src="${ctx}/static/source/js/jcanvas.min.js"></script>
+    <script type="text/javascript" src="${ctx}/static/source/js/board.js"></script>
+    <script type="text/javascript" src="${ctx}/static/source/js/ai2.min.js"></script>
     <style>
         .button{
             width:150px;

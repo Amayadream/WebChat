@@ -18,7 +18,7 @@
     <loggers>
         <root level="info">
             <appender-ref ref="consolePrint" />
-            <AppenderRef ref="databaseAppender" level="INFO" />
+            <!--<AppenderRef ref="databaseAppender" level="INFO" />-->
         </root>
     </loggers>
 </Configuration>

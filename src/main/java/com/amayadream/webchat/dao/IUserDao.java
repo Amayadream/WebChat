@@ -14,10 +14,15 @@ import java.util.List;
  */
 @Service(value = "userDao")
 public interface IUserDao {
-    List<User> selectAll(@Param("start") int start, @Param("end") int end);
+    List<User> selectAll(@Param("offset") int offset, @Param("limit") int limit);
+
     User selectUserByUserid(String userid);
+
     User selectCount();
+
     boolean insert(User user);
+
     boolean update(User user);
+
     boolean delete(String userid);
 }

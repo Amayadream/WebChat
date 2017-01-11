@@ -12,24 +12,26 @@ import javax.annotation.Resource;
 import java.util.List;
 
 /**
- * NAME   :  WebChat/com.amayadream.webchat.controller
  * Author :  Amayadream
  * Date   :  2016.01.10 00:23
  * TODO   :
  */
 @Controller
 public class LogController {
-    @Resource private Log log;
-    @Resource private ILogService logService;
+    @Resource
+    private Log log;
+    @Resource
+    private ILogService logService;
 
     @RequestMapping(value = "{userid}/log")
-    public ModelAndView selectAll(@PathVariable("userid") String userid, @RequestParam(defaultValue = "1") int page){
+    public ModelAndView selectAll(@PathVariable("userid") String userid, @RequestParam(defaultValue = "1") int page) {
         int pageSize = 5;
-        ModelAndView view = new ModelAndView("apps/log");
+        ModelAndView view = new ModelAndView("log");
         List<Log> list = logService.selectLogByUserid(userid, page, pageSize);
         int count = logService.selectCountByUserid(userid, pageSize);
         view.addObject("list", list);
         view.addObject("count", count);
         return view;
     }
+
 }

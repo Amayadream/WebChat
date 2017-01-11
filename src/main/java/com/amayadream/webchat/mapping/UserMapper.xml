@@ -21,35 +21,27 @@
 
   <!-- 查询所有用户 -->
   <select id="selectAll" resultMap="BaseResultMap">
-    SELECT * FROM
-    (
-    SELECT A.*,ROWNUM RN
-    FROM
-    (
-    SELECT * FROM WEBCHAT_USER
-    ORDER BY FIRSTTIME
-    ) A
-    )
-    WHERE RN BETWEEN #{start} and #{end}
+      SELECT  USERID, PASSWORD, NICKNAME, SEX, AGE, PROFILEHEAD, PROFILE, FIRSTTIME, LASTTIME, STATUS FROM user
+      ORDER BY FIRSTTIME
+      LIMIT #{offset}, #{limit}
   </select>
 
   <!-- 根据用户id查询用户 -->
   <select id="selectUserByUserid" resultMap="BaseResultMap" parameterType="string">
-    SELECT
-    <include refid="Base_Column_List"/>
-    FROM WEBCHAT_USER
+    SELECT <include refid="Base_Column_List"/>
+    FROM user
     WHERE USERID = #{userid, jdbcType=VARCHAR}
   </select>
 
   <!-- 根据用户id查询用户 -->
   <select id="selectCount" resultMap="BaseResultMap" >
     SELECT COUNT(*) USERID
-    FROM WEBCHAT_USER
+    FROM user
   </select>
 
   <!-- 插入用户 -->
   <insert id="insert" parameterType="com.amayadream.webchat.pojo.User">
-    INSERT INTO WEBCHAT_USER (USERID, PASSWORD, NICKNAME, SEX, AGE, PROFILEHEAD, PROFILE, FIRSTTIME, LASTTIME, STATUS)
+    INSERT INTO user (USERID, PASSWORD, NICKNAME, SEX, AGE, PROFILEHEAD, PROFILE, FIRSTTIME, LASTTIME, STATUS)
     VALUES (#{userid, jdbcType=VARCHAR}, #{password, jdbcType=VARCHAR}, #{nickname, jdbcType=VARCHAR}, #{sex, jdbcType=INTEGER},
     #{age, jdbcType=INTEGER}, #{profilehead, jdbcType=VARCHAR}, #{profile, jdbcType=VARCHAR},
     #{firsttime, jdbcType=VARCHAR}, #{lasttime, jdbcType=VARCHAR}, #{status, jdbcType=INTEGER})
@@ -57,7 +49,7 @@
 
   <!-- 更新用户 -->
   <update id="update" parameterType="com.amayadream.webchat.pojo.User">
-    UPDATE WEBCHAT_USER
+    UPDATE user
     <set>
       <if test="password != null and password != ''">
         PASSWORD = #{password, jdbcType=VARCHAR},
@@ -92,7 +84,7 @@
 
   <!-- 删除用户 -->
   <delete id="delete" parameterType="string">
-    DELETE FROM WEBCHAT_USER
+    DELETE FROM user
     WHERE USERID = #{userid, jdbcType=VARCHAR}
   </delete>
 

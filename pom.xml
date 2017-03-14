@@ -10,7 +10,6 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <spring.version>4.2.4.RELEASE</spring.version>
-        <!-- 注意这个mybatis版本不要太高，3.3.0已经验证不支持activiti5.19 -->
         <mybatis.version>3.2.6</mybatis.version>
         <mysql-jdbc.version>5.1.38</mysql-jdbc.version>
         <activiti.version>5.19.0</activiti.version>

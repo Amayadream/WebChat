@@ -1,6 +1,5 @@
 package com.amayadream.webchat.controller;
 
-import com.amayadream.webchat.pojo.Log;
 import com.amayadream.webchat.pojo.User;
 import com.amayadream.webchat.service.ILogService;
 import com.amayadream.webchat.service.IUserService;
@@ -23,32 +22,35 @@ import javax.servlet.http.HttpSession;
  * TODO   :  用户登录与注销
  */
 @Controller
-@RequestMapping(value = "user")
+@RequestMapping(value = "/user")
 public class LoginController {
-    @Resource
-    private User user;
+
     @Resource
     private IUserService userService;
-    @Resource
-    private Log log;
+
     @Resource
     private ILogService logService;
 
-    @RequestMapping(value = "login", method = RequestMethod.POST)
+    @RequestMapping(value = "/login", method = RequestMethod.GET)
+    public String login() {
+        return "login";
+    }
+
+    @RequestMapping(value = "/login", method = RequestMethod.POST)
     public String login(String userid, String password, HttpSession session, RedirectAttributes attributes,
                         WordDefined defined, CommonDate date, LogUtil logUtil, NetUtil netUtil, HttpServletRequest request) {
-        user = userService.selectUserByUserid(userid);
+        User user = userService.selectUserByUserid(userid);
         if (user == null) {
             attributes.addFlashAttribute("error", defined.LOGIN_USERID_ERROR);
-            return "redirect:/login";
+            return "redirect:/user/login";
         } else {
             if (!user.getPassword().equals(password)) {
                 attributes.addFlashAttribute("error", defined.LOGIN_PASSWORD_ERROR);
-                return "redirect:/login";
+                return "redirect:/user/login";
             } else {
                 if (user.getStatus() != 1) {
                     attributes.addFlashAttribute("error", defined.LOGIN_USERID_DISABLED);
-                    return "redirect:/login";
+                    return "redirect:/user/login";
                 } else {
                     logService.insert(logUtil.setLog(userid, date.getTime24(), defined.LOG_TYPE_LOGIN, defined.LOG_DETAIL_USER_LOGIN, netUtil.getIpAddress(request)));
                     session.setAttribute("userid", userid);
@@ -62,11 +64,11 @@ public class LoginController {
         }
     }
 
-    @RequestMapping(value = "logout")
+    @RequestMapping(value = "/logout")
     public String logout(HttpSession session, RedirectAttributes attributes, WordDefined defined) {
         session.removeAttribute("userid");
         session.removeAttribute("login_status");
         attributes.addFlashAttribute("message", defined.LOGOUT_SUCCESS);
-        return "redirect:/login";
+        return "redirect:/user/login";
     }
 }

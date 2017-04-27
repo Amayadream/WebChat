@@ -9,26 +9,27 @@ import org.springframework.web.bind.annotation.RequestMapping;
  * TODO   :  路由控制器
  */
 @Controller
+@RequestMapping(value = "")
 public class RouteController {
 
     @RequestMapping(value = "")
     public String index() {
-        return "login";
+        return "redirect:/user/login";
     }
 
-    @RequestMapping(value = "login")
-    public String login() {
-        return "login";
-    }
-
-    @RequestMapping(value = "about")
+    @RequestMapping(value = "/about")
     public String about() {
         return "about";
     }
 
-    @RequestMapping(value = "help")
+    @RequestMapping(value = "/help")
     public String help() {
         return "help";
+    }
+
+    @RequestMapping(value = "/system")
+    public String system() {
+        return "system-setting";
     }
 
 }

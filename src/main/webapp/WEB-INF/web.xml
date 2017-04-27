@@ -4,11 +4,23 @@
          xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
          version="3.0">
     <display-name>Archetype Created Web Application</display-name>
+
     <!-- Spring和mybatis的配置文件 -->
     <context-param>
         <param-name>contextConfigLocation</param-name>
         <param-value>classpath:spring/spring-mybatis.xml</param-value>
     </context-param>
+
+    <listener>
+        <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+    </listener>
+    <listener>
+        <listener-class>org.springframework.web.util.IntrospectorCleanupListener</listener-class>
+    </listener>
+    <listener>
+        <listener-class>com.amayadream.webchat.listener.LoggerListener</listener-class>
+    </listener>
+
     <!-- 编码过滤器 -->
     <filter>
         <filter-name>encodingFilter</filter-name>
@@ -23,29 +35,6 @@
         <filter-name>encodingFilter</filter-name>
         <url-pattern>/*</url-pattern>
     </filter-mapping>
-
-    <!-- 登陆拦截器,针对jsp页面 -->
-    <filter>
-        <filter-name>LoginFilter</filter-name>
-        <filter-class>com.amayadream.webchat.filter.LoginFilter</filter-class>
-    </filter>
-    <filter-mapping>
-        <filter-name>LoginFilter</filter-name>
-        <url-pattern>/*</url-pattern>
-    </filter-mapping>
-
-    <!-- Spring监听器 -->
-    <listener>
-        <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
-    </listener>
-    <!-- 防止Spring内存溢出监听器 -->
-    <listener>
-        <listener-class>org.springframework.web.util.IntrospectorCleanupListener</listener-class>
-    </listener>
-    <!--  -->
-    <listener>
-        <listener-class>com.amayadream.webchat.listener.LoggerListener</listener-class>
-    </listener>
 
     <!-- Spring MVC servlet -->
     <servlet>
@@ -73,9 +62,5 @@
         <filter-name>HiddenHttpMethodFilter</filter-name>
         <servlet-name>SpringMVC</servlet-name>
     </filter-mapping>
-
-    <welcome-file-list>
-        <welcome-file>/login</welcome-file>
-    </welcome-file-list>
 
 </web-app>

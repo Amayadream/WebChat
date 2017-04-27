@@ -11,7 +11,7 @@
                 <a class="am-cf" data-am-collapse="{target: '#collapse-nav'}"><span class="am-icon-cogs"></span> 设置 <span class="am-icon-angle-right am-fr am-margin-right"></span></a>
                 <ul class="am-list am-collapse admin-sidebar-sub am-in" id="collapse-nav">
                     <li><a href="${ctx}/${userid}/config"><span class="am-icon-group"></span> 个人设置</a></li>
-                    <li><a href="${ctx}/apps/system-setting.jsp"><span class="am-icon-cog"></span> 系统设置</a></li>
+                    <li><a href="${ctx}/system-setting"><span class="am-icon-cog"></span> 系统设置</a></li>
                 </ul>
             </li>
             <li><a href="${ctx}/${userid}/log"><span class="am-icon-inbox"></span> 系统日志<span class="am-badge am-badge-secondary am-margin-right am-fr">24</span></a></li>

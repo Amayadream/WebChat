@@ -17,9 +17,9 @@ import java.util.List;
  * TODO   :
  */
 @Controller
+@RequestMapping(value = "")
 public class LogController {
-    @Resource
-    private Log log;
+
     @Resource
     private ILogService logService;
 

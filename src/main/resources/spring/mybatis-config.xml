@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+
+    <settings>
+        <!-- 全局缓存, 默认为true -->
+        <setting name="cacheEnabled" value="true"/>
+        <!-- 超时时间 -->
+        <setting name="defaultStatementTimeout" value="3000"/>
+        <!-- 将数据库的下划线式映射成JavaBean中的驼峰式 -->
+        <setting name="mapUnderscoreToCamelCase" value="true"/>
+    </settings>
+
+</configuration>

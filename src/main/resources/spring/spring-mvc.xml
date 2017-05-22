@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:context="http://www.springframework.org/schema/context"
        xmlns:mvc="http://www.springframework.org/schema/mvc"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
@@ -10,6 +10,7 @@
                         http://www.springframework.org/schema/mvc
                         http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd">
 
+    <!-- 扫描 -->
     <context:component-scan base-package="com.amayadream.webchat.*" >
         <context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
         <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Service"/>
@@ -20,24 +21,6 @@
         <property name="prefix" value="/WEB-INF/view/" />
         <property name="suffix" value=".jsp" />
     </bean>
-
-    <mvc:interceptors>
-        <!-- 登陆拦截器,负责拦截未登录的操作 -->
-        <mvc:interceptor>
-            <!-- 需要拦截的地址 -->
-            <mvc:mapping path="/**"/>
-            <!-- 需要排除拦截的地址 -->
-            <mvc:exclude-mapping path="/static/**"/>
-            <bean id="loginInterceptor" class="com.amayadream.webchat.interceptor.LoginInterceptor">
-                <property name="IGNORE_URI">
-                    <list>
-                        <value>/user/login</value>
-                        <value>/user/logout</value>
-                    </list>
-                </property>
-            </bean>
-        </mvc:interceptor>
-    </mvc:interceptors>
 
     <!-- 开启注解模式 -->
     <mvc:annotation-driven/>

@@ -4,19 +4,27 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 
 /**
+ * 用户
  * @author : Amayadream
  * @date :   2017-05-22 16:06
  */
 public class User implements Serializable {
 
+    /* 用户名 */
     private String userId;
+    /* 昵称 */
     private String nickName;
+    /* 密码 */
     private String password;
+    /* 盐 */
     private String salt;
+    /* 注册时间 */
     private LocalDateTime createdTime;
+    /* 最后登录时间 */
     private LocalDateTime updatedTime;
 
     public User() {
+
     }
 
     public User(String userId, String nickName, String password, String salt, LocalDateTime createdTime) {

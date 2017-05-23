@@ -5,12 +5,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 /**
  * @author : Amayadream
- * @date :   2017-05-22 16:59
+ * @date :   2017-05-23 10:59
  */
 @Controller
-@RequestMapping(value = "")
-public class IndexController {
-
+@RequestMapping(value = "/chat")
+public class ChatController {
 
 
 }

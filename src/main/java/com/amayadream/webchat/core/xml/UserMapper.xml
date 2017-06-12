@@ -3,7 +3,7 @@
 <mapper namespace="com.amayadream.webchat.core.dao.IUserDao">
 
     <select id="selectByPrimaryKey" resultType="User" parameterType="string">
-        SELECT user_id, nick_name, password, salt, created_time, updated_time FROM user
+        SELECT user_id, nick_name, password, salt, sign, avatar, created_time, updated_time FROM user
         WHERE user_id = #{userId, jdbcType=VARCHAR}
     </select>
 
@@ -14,7 +14,8 @@
    <insert id="insert" parameterType="User">
        INSERT INTO user (user_id, nick_name, password, salt, created_time, updated_time)
        VALUES(#{userId, jdbcType=VARCHAR}, #{nickName, jdbcType=VARCHAR}, #{password, jdbcType=VARCHAR},
-              #{salt, jdbcType=VARCHAR}, #{createdTime, jdbcType=TIMESTAMP}, #{updatedTime, jdbcType=TIMESTAMP})
+              #{salt, jdbcType=VARCHAR}, #{sign, jdbcType=VARCHAR}, #{avatar, jdbcType=VARCHAR},
+              #{createdTime, jdbcType=TIMESTAMP}, #{updatedTime, jdbcType=TIMESTAMP})
    </insert>
 
     <update id="update" parameterType="User">
@@ -27,6 +28,12 @@
                 password = #{password, jdbcType=VARCHAR},
             </if>
             <if test="salt != null and salt != ''">
+                salt = #{salt, jdbcType=VARCHAR},
+            </if>
+            <if test="sign != null and salt != ''">
+                salt = #{salt, jdbcType=VARCHAR},
+            </if>
+            <if test="avatar != null and salt != ''">
                 salt = #{salt, jdbcType=VARCHAR},
             </if>
             <if test="updatedTime != null and updatedTime != ''">

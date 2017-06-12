@@ -18,6 +18,10 @@ public class User implements Serializable {
     private String password;
     /* 盐 */
     private String salt;
+    /* 个人签名 */
+    private String sign;
+    /* 头像 */
+    private String avatar;
     /* 注册时间 */
     private LocalDateTime createdTime;
     /* 最后登录时间 */
@@ -25,14 +29,6 @@ public class User implements Serializable {
 
     public User() {
 
-    }
-
-    public User(String userId, String nickName, String password, String salt, LocalDateTime createdTime) {
-        this.userId = userId;
-        this.nickName = nickName;
-        this.password = password;
-        this.salt = salt;
-        this.createdTime = createdTime;
     }
 
     public String getUserId() {
@@ -65,6 +61,22 @@ public class User implements Serializable {
 
     public void setSalt(String salt) {
         this.salt = salt;
+    }
+
+    public String getSign() {
+        return sign;
+    }
+
+    public void setSign(String sign) {
+        this.sign = sign;
+    }
+
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
     }
 
     public LocalDateTime getCreatedTime() {

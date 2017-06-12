@@ -16,6 +16,8 @@ public class Group implements Serializable {
     private String name;
     /* 描述 */
     private String desc;
+    /* 群组头像 */
+    private String avatar;
     /* 管理员/创建者 */
     private String userId;
     /* 创建时间 */
@@ -23,14 +25,6 @@ public class Group implements Serializable {
 
     public Group() {
 
-    }
-
-    public Group(Long id, String name, String desc, String userId, LocalDateTime createdTime) {
-        this.id = id;
-        this.name = name;
-        this.desc = desc;
-        this.userId = userId;
-        this.createdTime = createdTime;
     }
 
     public Long getId() {
@@ -55,6 +49,14 @@ public class Group implements Serializable {
 
     public void setDesc(String desc) {
         this.desc = desc;
+    }
+
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
     }
 
     public String getUserId() {

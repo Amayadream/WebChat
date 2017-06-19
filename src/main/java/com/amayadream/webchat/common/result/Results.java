@@ -7,7 +7,7 @@ import java.io.Serializable;
  * @author :  Amayadream
  * @date :  2017.06.12 22:18
  */
-public class ResultEntity {
+public class Results {
 
     /** 状态码 */
     private Integer code;
@@ -16,26 +16,26 @@ public class ResultEntity {
     /** 数据 */
     private Serializable data;
 
-    private ResultEntity(Integer code, String msg, Serializable data) {
+    private Results(Integer code, String msg, Serializable data) {
         this.code = code;
         this.msg = msg;
         this.data = data;
     }
 
-    public static ResultEntity buildOkResult(ResultConstant c) {
-        return new ResultEntity(c.code, c.message, null);
+    public static Results ok(ResultConstant c) {
+        return new Results(c.code, c.message, null);
     }
 
-    public static ResultEntity buildOkResult(ResultConstant c, Serializable data) {
-        return new ResultEntity(c.code, c.message, data);
+    public static Results ok(ResultConstant c, Serializable data) {
+        return new Results(c.code, c.message, data);
     }
 
-    public static ResultEntity buildNokResult(ResultConstant c) {
-        return new ResultEntity(c.code, c.message, null);
+    public static Results nok(ResultConstant c) {
+        return new Results(c.code, c.message, null);
     }
 
-    public static ResultEntity buildNokResult(ResultConstant c, Serializable data) {
-        return new ResultEntity(c.code, c.message, data);
+    public static Results nok(ResultConstant c, Serializable data) {
+        return new Results(c.code, c.message, data);
     }
 
     public Integer getCode() {

@@ -19,6 +19,11 @@ public class GroupMember implements Serializable {
     /* 加入状态, 0:待审核, 1:正常 */
     private int status;
 
+    /* 附加属性 */
+    private String nickName;
+    private String avatar;
+    private String sign;
+
     public GroupMember() {
 
     }
@@ -60,5 +65,29 @@ public class GroupMember implements Serializable {
 
     public void setStatus(int status) {
         this.status = status;
+    }
+
+    public String getNickName() {
+        return nickName;
+    }
+
+    public void setNickName(String nickName) {
+        this.nickName = nickName;
+    }
+
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
+    }
+
+    public String getSign() {
+        return sign;
+    }
+
+    public void setSign(String sign) {
+        this.sign = sign;
     }
 }

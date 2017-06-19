@@ -2,7 +2,7 @@ package com.amayadream.webchat.core.serviceImpl;
 
 import com.amayadream.webchat.core.dao.IUserDao;
 import com.amayadream.webchat.core.model.User;
-import com.amayadream.webchat.core.service.IUserService;
+import com.amayadream.webchat.core.service.UserService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -12,7 +12,7 @@ import javax.annotation.Resource;
  * @date :   2017-05-23 14:21
  */
 @Service
-public class UserServiceImpl implements IUserService {
+public class UserServiceImpl implements UserService {
 
     @Resource
     private IUserDao userDao;

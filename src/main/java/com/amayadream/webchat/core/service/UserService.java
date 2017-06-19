@@ -6,7 +6,7 @@ import com.amayadream.webchat.core.model.User;
  * @author : Amayadream
  * @date :   2017-05-23 14:19
  */
-public interface IUserService {
+public interface UserService {
 
     User selectByPrimaryKey(String userId);
 

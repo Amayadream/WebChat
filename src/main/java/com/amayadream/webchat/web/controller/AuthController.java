@@ -3,7 +3,7 @@ package com.amayadream.webchat.web.controller;
 import com.amayadream.webchat.common.util.Constants;
 import com.amayadream.webchat.common.util.StringUtil;
 import com.amayadream.webchat.core.model.User;
-import com.amayadream.webchat.core.service.IUserService;
+import com.amayadream.webchat.core.service.UserService;
 import com.google.common.base.Charsets;
 import com.google.common.base.Objects;
 import org.springframework.stereotype.Controller;
@@ -27,7 +27,7 @@ import java.time.LocalDateTime;
 public class AuthController {
 
     @Resource
-    private IUserService userService;
+    private UserService userService;
 
     /**
      * 跳转登录页

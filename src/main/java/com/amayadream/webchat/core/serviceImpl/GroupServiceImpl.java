@@ -1,6 +1,6 @@
 package com.amayadream.webchat.core.serviceImpl;
 
-import com.amayadream.webchat.core.service.IGroupService;
+import com.amayadream.webchat.core.service.GroupService;
 import org.springframework.stereotype.Service;
 
 /**
@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
  * @date :   2017-05-23 14:22
  */
 @Service
-public class GroupServiceImpl implements IGroupService {
+public class GroupServiceImpl implements GroupService {
 
 
 

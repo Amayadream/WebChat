@@ -2,4 +2,9 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.amayadream.webchat.core.dao.IGroupMemberDao">
 
+    <select id="list" resultType="GroupMember" parameterType="long">
+        SELECT a.member, b.nick_name, b.avatar, b.sign FROM group_member a JOIN user b ON a.member = b.user_id
+        WHERE group_id = #{groupId, jdbcType=VARCHAR}
+    </select>
+
 </mapper>

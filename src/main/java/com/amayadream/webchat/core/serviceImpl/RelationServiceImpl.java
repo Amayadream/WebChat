@@ -1,6 +1,6 @@
 package com.amayadream.webchat.core.serviceImpl;
 
-import com.amayadream.webchat.core.service.IRelationService;
+import com.amayadream.webchat.core.service.RelationService;
 import org.springframework.stereotype.Service;
 
 /**
@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
  * @date :   2017-05-23 14:21
  */
 @Service
-public class RelationServiceImpl implements IRelationService {
+public class RelationServiceImpl implements RelationService {
 
 
 

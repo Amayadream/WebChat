@@ -7,8 +7,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=Edge"/>
     <title>WebChat</title>
-    <link type="text/css" rel="stylesheet" href="${ctx}/static/plugin/layui.layim/layui/css/layui.css">
-    <script src="${ctx}/static/plugin/layui.layim/layui/layui.js"></script>
+    <jsp:include page="include/common.jsp"/>
     <style>
         html {
             background-color: #333;

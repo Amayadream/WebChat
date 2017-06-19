@@ -31,6 +31,19 @@ public class User implements Serializable {
 
     }
 
+    public User(String userId, LocalDateTime updatedTime) {
+        this.userId = userId;
+        this.updatedTime = updatedTime;
+    }
+
+    public User(String userId, String password, String salt, String avatar, LocalDateTime createdTime) {
+        this.userId = userId;
+        this.password = password;
+        this.salt = salt;
+        this.avatar = avatar;
+        this.createdTime = createdTime;
+    }
+
     public String getUserId() {
         return userId;
     }

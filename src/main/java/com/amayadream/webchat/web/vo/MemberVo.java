@@ -18,16 +18,22 @@ public class MemberVo implements Serializable {
     private String avatar;
     private String sign;
 
-    public static List<MemberVo> convert(List<GroupMember> members) {
+    /**
+     * members -> memberVos
+     */
+    public static List<MemberVo> convertToVos(List<GroupMember> members) {
         List<MemberVo> vos = new ArrayList<MemberVo>();
         if (members == null || members.size() == 0) {
             return vos;
         }
-        members.forEach((item) -> vos.add(convert(item)));
+        members.forEach((item) -> vos.add(convertToVo(item)));
         return vos;
     }
 
-    public static MemberVo convert(GroupMember member) {
+    /**
+     * member -> memberVo
+     */
+    public static MemberVo convertToVo(GroupMember member) {
         MemberVo vo = new MemberVo();
         vo.setId(member.getMember());
         vo.setUsername(member.getNickName());
@@ -36,7 +42,10 @@ public class MemberVo implements Serializable {
         return vo;
     }
 
-    public static MemberVo convert(User user) {
+    /**
+     * use -> member
+     */
+    public static MemberVo convertToVo(User user) {
         MemberVo vo = new MemberVo();
         vo.setId(user.getUserId());
         vo.setUsername(user.getNickName());

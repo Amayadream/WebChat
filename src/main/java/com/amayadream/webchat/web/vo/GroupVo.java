@@ -17,6 +17,9 @@ public class GroupVo implements Serializable {
     private String groupname;
     private String avatar;
 
+    /**
+     * group -> groupVo
+     */
     public static GroupVo convertToVo(Group group) {
         GroupVo vo = new GroupVo();
         if (group != null) {
@@ -27,6 +30,9 @@ public class GroupVo implements Serializable {
         return vo;
     }
 
+    /**
+     * groups -> groupVos
+     */
     public static List<GroupVo> convertToVos(List<Group> groups) {
         List<GroupVo> vos = new ArrayList<GroupVo>();
         if (!CollectionUtils.isEmpty(groups)) {

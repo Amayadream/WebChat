@@ -20,7 +20,9 @@ public class FriendVo implements Serializable {
     private Integer online;
     private List<UserVo> list;
 
-
+    /**
+     * relations -> friendVos
+     */
     public static List<FriendVo> convertToVo(List<Relation> relations) {
         List<FriendVo> vos = new ArrayList<FriendVo>();
         if (!CollectionUtils.isEmpty(relations)) {
@@ -55,16 +57,20 @@ public class FriendVo implements Serializable {
         this.id = id;
     }
 
-    public void setOnline(Integer online) {
-        this.online = online;
-    }
-
     public String getGroupname() {
         return groupname;
     }
 
     public void setGroupname(String groupname) {
         this.groupname = groupname;
+    }
+
+    public Integer getOnline() {
+        return online;
+    }
+
+    public void setOnline(Integer online) {
+        this.online = online;
     }
 
     public List<UserVo> getList() {

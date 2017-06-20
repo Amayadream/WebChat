@@ -7,7 +7,7 @@ import java.io.Serializable;
  * @author :  Amayadream
  * @date :  2017.06.12 22:18
  */
-public class Results {
+public class Results implements Serializable {
 
     /** 状态码 */
     private Integer code;

@@ -36,7 +36,6 @@ public class ChatController {
     @Resource
     private RelationService relationService;
 
-
     /**
      * 获取好友列表/个人信息/群组列表
      */
@@ -58,9 +57,9 @@ public class ChatController {
     public Results members(@ModelAttribute(Constants.SESSION_USERID) String userId, @ModelAttribute(Constants.SESSION_USER) User user, @RequestParam Long groupId) {
         List<GroupMember> list = groupMemberService.list(groupId);
         JSONObject data = new JSONObject();
-        data.put("owner", MemberVo.convert(user));
+        data.put("owner", MemberVo.convertToVo(user));
         data.put("members", list.size());
-        data.put("list", MemberVo.convert(list));
+        data.put("list", MemberVo.convertToVos(list));
         return Results.ok(ResultConstant.SUCCESS, data);
     }
 

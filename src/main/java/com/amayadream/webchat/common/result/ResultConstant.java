@@ -12,8 +12,8 @@ public enum ResultConstant {
     , PERMISSION_ERROR(9999, "操作越权")
     ;
 
-    public Integer code;
-    public String message;
+    Integer code;
+    String message;
 
     ResultConstant(Integer code, String message) {
         this.code = code;

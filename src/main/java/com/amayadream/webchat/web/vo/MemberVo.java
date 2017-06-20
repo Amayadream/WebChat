@@ -3,6 +3,7 @@ package com.amayadream.webchat.web.vo;
 import com.amayadream.webchat.core.model.GroupMember;
 import com.amayadream.webchat.core.model.User;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,7 +11,7 @@ import java.util.List;
  * @author :  Amayadream
  * @date :  2017.06.19 23:26
  */
-public class MemberVo {
+public class MemberVo implements Serializable {
 
     private String id;
     private String username;

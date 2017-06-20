@@ -23,8 +23,16 @@ public class Group implements Serializable {
     /* 创建时间 */
     private LocalDateTime createdTime;
 
+    /* 附加字段 */
+    /* 加入者 */
+    private String member;
+
     public Group() {
 
+    }
+
+    public Group(String member) {
+        this.member = member;
     }
 
     public Long getId() {
@@ -74,4 +82,13 @@ public class Group implements Serializable {
     public void setCreatedTime(LocalDateTime createdTime) {
         this.createdTime = createdTime;
     }
+
+    public String getMember() {
+        return member;
+    }
+
+    public void setMember(String member) {
+        this.member = member;
+    }
+
 }

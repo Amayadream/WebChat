@@ -3,23 +3,23 @@
 <mapper namespace="com.amayadream.webchat.core.dao.IUserDao">
 
     <select id="selectByPrimaryKey" resultType="User" parameterType="string">
-        SELECT user_id, nick_name, password, salt, sign, avatar, created_time, updated_time FROM user
+        SELECT user_id, nick_name, password, salt, sign, avatar, created_time, updated_time FROM tab_user
         WHERE user_id = #{userId, jdbcType=VARCHAR}
     </select>
 
     <select id="list" resultType="User">
-        SELECT user_id, nick_name, created_time, updated_time FROM user
+        SELECT user_id, nick_name, created_time, updated_time FROM tab_user
     </select>
 
    <insert id="insert" parameterType="User">
-       INSERT INTO user (user_id, nick_name, password, salt, sign, avatar, created_time, updated_time)
+       INSERT INTO tab_user (user_id, nick_name, password, salt, sign, avatar, created_time, updated_time)
        VALUES(#{userId, jdbcType=VARCHAR}, #{nickName, jdbcType=VARCHAR}, #{password, jdbcType=VARCHAR},
               #{salt, jdbcType=VARCHAR}, #{sign, jdbcType=VARCHAR}, #{avatar, jdbcType=VARCHAR},
               #{createdTime, jdbcType=TIMESTAMP}, #{updatedTime, jdbcType=TIMESTAMP})
    </insert>
 
     <update id="update" parameterType="User">
-        UPDATE user
+        UPDATE tab_user
         <set>
             <if test="nickName != null and nickName != ''">
                 nick_name = #{nickName, jdbcType=VARCHAR},

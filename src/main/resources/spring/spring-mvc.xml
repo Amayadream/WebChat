@@ -25,6 +25,30 @@
     <!-- 开启注解模式 -->
     <mvc:annotation-driven/>
 
+    <!-- 拦截器组 -->
+    <mvc:interceptors>
+        <mvc:interceptor>
+            <mvc:mapping path="/**" />
+            <!-- 这里必须进行静态资源过滤 -->
+            <mvc:exclude-mapping path="/static/**"/>
+            <bean class="com.amayadream.webchat.web.interceptor.AuthInterceptor">
+                <property name="excludedUrls">
+                    <list>
+                        <value>/index</value>
+                        <value>/auth/login</value>
+                        <value>/auth/register</value>
+                        <value>/auth/logout</value>
+                    </list>
+                </property>
+                <property name="excludedRegex">
+                    <list>
+                        <value>/common/</value>
+                    </list>
+                </property>
+            </bean>
+        </mvc:interceptor>
+    </mvc:interceptors>
+
     <!-- 静态资源映射 -->
     <mvc:resources mapping="/static/**" location="/static/"/>
 

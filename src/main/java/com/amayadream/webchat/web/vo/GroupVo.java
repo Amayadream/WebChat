@@ -1,22 +1,46 @@
 package com.amayadream.webchat.web.vo;
 
+import com.amayadream.webchat.core.model.Group;
+import org.springframework.util.CollectionUtils;
+
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * @author :  Amayadream
  * @date :  2017.06.19 23:37
  */
-public class GroupVo {
+public class GroupVo implements Serializable {
 
-    private String id;
+    private Long id;
     private String groupname;
     private String avatar;
 
+    public static GroupVo convertToVo(Group group) {
+        GroupVo vo = new GroupVo();
+        if (group != null) {
+            vo.setId(group.getId());
+            vo.setGroupname(group.getName());
+            vo.setAvatar(group.getAvatar());
+        }
+        return vo;
+    }
+
+    public static List<GroupVo> convertToVos(List<Group> groups) {
+        List<GroupVo> vos = new ArrayList<GroupVo>();
+        if (!CollectionUtils.isEmpty(groups)) {
+            groups.forEach((item)->vos.add(convertToVo(item)));
+        }
+        return vos;
+    }
 
 
-    public String getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

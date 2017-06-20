@@ -3,25 +3,25 @@
 <mapper namespace="com.amayadream.webchat.core.dao.IRelationDao">
 
     <select id="list" resultType="Relation" parameterType="Relation">
-        SELECT user_id, friend, group, created_time, status FROM relation
+        SELECT a.user_id, a.friend, a.group_name, a.created_time, a.status, b.nick_name, b.avatar, b.sign FROM tab_relation a JOIN tab_user b ON a.friend = b.user_id
         <where>
             <if test="userId != null and userId != ''">
-                user_id = #{userId, jdbcType=VARCHAR}
+                a.user_id = #{userId, jdbcType=VARCHAR}
             </if>
             <if test="friend != null and friend != ''">
-                AND friend = #{friend, jdbcType=VARCHAR}
+                AND a.friend = #{friend, jdbcType=VARCHAR}
             </if>
         </where>
     </select>
 
     <insert id="insert" parameterType="Relation">
-        INSERT INTO relation (user_id, friend, group, created_time, status)
+        INSERT INTO tab_relation (user_id, friend, group_name, created_time, status)
         VALUES (#{userId, jdbcType=VARCHAR}, #{friend, jdbcType=VARCHAR},
-                #{group, jdbcType=VARCHAR}, #{createdTime, jdbcType=TIMESTAMP}, #{status, jdbcType=VARCHAR})
+                #{groupName, jdbcType=VARCHAR}, #{createdTime, jdbcType=TIMESTAMP}, #{status, jdbcType=VARCHAR})
     </insert>
 
     <delete id="delete" parameterType="Relation">
-        DELETE FROM relation
+        DELETE FROM tab_relation
         <where>
             <if test="userId != null and userId != ''">
                 user_id = #{userId, jdbcType=VARCHAR}

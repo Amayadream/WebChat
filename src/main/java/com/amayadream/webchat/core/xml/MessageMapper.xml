@@ -3,12 +3,12 @@
 <mapper namespace="com.amayadream.webchat.core.dao.IMessageDao">
 
     <select id="selectByPrimaryKey" resultType="Message" parameterType="long">
-        SELECT id, sender, receiver, content, send_time FROM message
+        SELECT id, sender, receiver, content, send_time FROM tab_message
         WHERE id = #{id, jdbcType=BIGINT}
     </select>
 
     <select id="list" resultType="Message" parameterType="Message">
-        SELECT id, sender, receiver, content, send_time FROM message
+        SELECT id, sender, receiver, content, send_time FROM tab_message
         <where>
             <if test="sender != null and sender != ''">
                 sender = #{sender, jdbcType=VARCHAR}
@@ -20,7 +20,7 @@
     </select>
 
     <insert id="insert" parameterType="Message">
-        INSERT INTO message (sender, receiver, content, send_time)
+        INSERT INTO tab_message (sender, receiver, content, send_time)
         VALUES (#{sender, jdbcType=VARCHAR}, #{receiver, jdbcType=VARCHAR}, #{content, jdbcType=VARCHAR},
                 #{sendTime, jdbcType=TIMESTAMP})
     </insert>

@@ -15,20 +15,30 @@ public class Relation implements Serializable {
     /* 关联用户名 */
     private String friend;
     /* 分组名称 */
-    private String group;
+    private String groupName;
     /* 添加时间 */
     private LocalDateTime createdTime;
     /* 状态, 0:待同意, 1:同意, -1:拒绝 */
     private int status;
 
+
+    /* 附加属性 */
+    private String nickName;
+    private String avatar;
+    private String sign;
+
     public Relation() {
 
     }
 
-    public Relation(String userId, String friend, String group, LocalDateTime createdTime, int status) {
+    public Relation(String userId) {
+        this.userId = userId;
+    }
+
+    public Relation(String userId, String friend, String groupName, LocalDateTime createdTime, int status) {
         this.userId = userId;
         this.friend = friend;
-        this.group = group;
+        this.groupName = groupName;
         this.createdTime = createdTime;
         this.status = status;
     }
@@ -49,12 +59,12 @@ public class Relation implements Serializable {
         this.friend = friend;
     }
 
-    public String getGroup() {
-        return group;
+    public String getGroupName() {
+        return groupName;
     }
 
-    public void setGroup(String group) {
-        this.group = group;
+    public void setGroupName(String groupName) {
+        this.groupName = groupName;
     }
 
     public LocalDateTime getCreatedTime() {
@@ -73,4 +83,27 @@ public class Relation implements Serializable {
         this.status = status;
     }
 
+    public String getNickName() {
+        return nickName;
+    }
+
+    public void setNickName(String nickName) {
+        this.nickName = nickName;
+    }
+
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
+    }
+
+    public String getSign() {
+        return sign;
+    }
+
+    public void setSign(String sign) {
+        this.sign = sign;
+    }
 }

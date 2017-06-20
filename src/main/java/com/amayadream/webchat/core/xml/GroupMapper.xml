@@ -2,4 +2,24 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.amayadream.webchat.core.dao.IGroupDao">
 
+    <select id="selectByPrimaryKey" resultType="Group" parameterType="long">
+        SELECT id, name, desc, avatar, user_id, created_time FROM tab_group
+        WHERE id = #{id, jdbcType=BIGINT}
+    </select>
+
+    <select id="list" resultType="Group" parameterType="Group">
+        SELECT a.id, a.name, a.desc, a.avatar, a.user_id, a.created_time FROM tab_group a JOIN tab_group_member b ON a.id = b.group_id
+        <where>
+            <if test="name != null and name != ''">
+                a.name = #{name}
+            </if>
+            <if test="userId != null and userId != ''">
+                AND a.userId = #{userId}
+            </if>
+            <if test="member != null and member != ''">
+                AND b.member = #{member}
+            </if>
+        </where>
+    </select>
+
 </mapper>

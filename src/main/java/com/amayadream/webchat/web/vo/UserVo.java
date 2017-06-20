@@ -1,10 +1,15 @@
 package com.amayadream.webchat.web.vo;
 
+import com.amayadream.webchat.core.model.Relation;
+import com.amayadream.webchat.core.model.User;
+
+import java.io.Serializable;
+
 /**
  * @author :  Amayadream
  * @date :  2017.06.19 23:39
  */
-public class UserVo {
+public class UserVo implements Serializable {
 
     private String id;
     private String username;
@@ -12,6 +17,31 @@ public class UserVo {
     private String sign;
     /* offline/online */
     private String status;
+
+
+    public static UserVo convertToVo(Relation relation) {
+        UserVo vo = new UserVo();
+        if (relation != null) {
+            vo.setId(relation.getFriend());
+            vo.setUsername(relation.getNickName());
+            vo.setAvatar(relation.getAvatar());
+            vo.setSign(relation.getSign());
+            vo.setStatus("online");
+        }
+        return vo;
+    }
+
+    public static UserVo convert(User user) {
+        UserVo vo = new UserVo();
+        if (user != null) {
+            vo.setId(user.getUserId());
+            vo.setUsername(user.getNickName());
+            vo.setAvatar(user.getAvatar());
+            vo.setSign(user.getSign());
+            vo.setStatus("online");
+        }
+        return vo;
+    }
 
 
     public String getId() {

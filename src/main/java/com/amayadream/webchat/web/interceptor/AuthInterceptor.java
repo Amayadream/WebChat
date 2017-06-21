@@ -28,7 +28,7 @@ public class AuthInterceptor implements HandlerInterceptor {
         //获取URI后缀
         String requestUri = request.getServletPath();
 
-        if(requestUri.equalsIgnoreCase("/"))    return true;
+//        if(requestUri.equalsIgnoreCase("/"))    return true;
 
         //首段匹配排除拦截地址
         for(String uri : excludedRegex){

@@ -20,7 +20,31 @@
         alert('请部署到localhost上查看该演示');
     }
 
+
+
     layui.use('layim', function (layim) {
+
+        //建立WebSocket通讯
+        //注意：如果你要兼容ie8+，建议你采用 socket.io 的版本。下面是以原生WS为例
+
+        var socket = new WebSocket('ws://localhost:8080/chatServer');
+
+        //发送一个消息
+        socket.send('Hi Server, I am LayIM!');
+        socket.send(JSON.stringify({
+            type: '' //随便定义，用于在服务端区分消息类型
+            ,data: {}
+        }));
+        //连接成功时触发
+        socket.onopen = function(){
+            socket.send('XXX连接成功');
+        };
+
+        //监听收到的消息
+        socket.onmessage = function(res){
+            //res为接受到的值，如 {"emit": "messageName", "data": {}}
+            //emit即为发出的事件名，用于区分不同的消息
+        };
 
         //演示自动回复
         var autoReplay = [
@@ -40,7 +64,8 @@
 
             //初始化接口
             init: {
-                url: '${ctx}/static/plugin/layui.layim/demo/json/getList.json'
+                <%--url: '${ctx}/static/plugin/layui.layim/demo/json/getList.json'--%>
+                url: '${ctx}/friends'
                 , data: {}
             }
 
@@ -62,7 +87,7 @@
 
             //查看群员接口
             , members: {
-                url: '${ctx}/static/plugin/layui.layim/demo/json/getMembers.json'
+                url: '${ctx}/members'
                 , data: {}
             }
 
@@ -124,7 +149,7 @@
 
         //监听在线状态的切换事件
         layim.on('online', function (data) {
-            //console.log(data);
+            console.log(data);
         });
 
         //监听签名修改

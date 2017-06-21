@@ -34,7 +34,6 @@
             <bean class="com.amayadream.webchat.web.interceptor.AuthInterceptor">
                 <property name="excludedUrls">
                     <list>
-                        <value>/index</value>
                         <value>/auth/login</value>
                         <value>/auth/register</value>
                         <value>/auth/logout</value>
